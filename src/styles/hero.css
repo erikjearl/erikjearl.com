@@ -1,0 +1,81 @@
+/* ============ HERO ============ */
+#hero{
+  align-items:flex-end;
+  padding-bottom:5rem;
+}
+#hero .bg-layer img{
+  top:-4%;
+  height:112%;
+  transform-origin:50% 35%;
+  animation:kenburns 7s cubic-bezier(.2,.6,.3,1) both;
+}
+@keyframes kenburns{
+  from{transform:scale(1.09);}
+  to{transform:scale(1);}
+}
+#hero .scrim{
+  background:linear-gradient(180deg, rgba(8,12,9,.12) 0%, rgba(8,12,9,.18) 45%, rgba(10,14,11,.9) 100%);
+}
+.hero-stamp{
+  display:inline-flex;
+  align-items:center;
+  gap:.8rem;
+  font-size:.72rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--rope);
+  margin-bottom:1.5rem;
+}
+.hero-stamp::before,
+.hero-stamp::after{
+  content:"";
+  width:34px;
+  height:1px;
+  background:var(--rope-dim);
+}
+#hero h1{
+  font-size:clamp(3.4rem, 7.2vw, 6.4rem);
+  line-height:.94;
+  text-shadow:0 4px 30px rgba(0,0,0,.4);
+}
+#hero h1 em{
+  font-style:italic;
+  font-weight:500;
+  color:var(--rope-bright);
+}
+.hero-role{
+  font-size:1.02rem;
+  margin-top:1.3rem;
+  max-width:620px;
+  opacity:.92;
+  line-height:1.65;
+}
+.hero-role .co{color:var(--rope);font-weight:600;}
+.scroll-cue{
+  position:absolute;
+  bottom:2.6rem;
+  right:8vw;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.7rem;
+  font-size:.66rem;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  opacity:.85;
+  animation:bob 2.6s ease-in-out infinite;
+}
+.scroll-cue .line{
+  width:1px;
+  height:40px;
+  background:linear-gradient(to bottom, var(--rope), transparent);
+}
+@keyframes bob{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(8px);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  #hero .bg-layer img{animation:none;}
+  .scroll-cue{animation:none;}
+}
