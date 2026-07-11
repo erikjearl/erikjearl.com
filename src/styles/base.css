@@ -136,3 +136,10 @@ section{
   .reveal{opacity:1;transform:none;transition:none;}
   .bg-layer{will-change:auto;}
 }
+
+/* Phones: rail hidden (see routerail.css), so its width collapses and
+   the calc() paddings tighten automatically. */
+@media (max-width: 700px) {
+  :root { --rail-w: 0px; }
+  section { padding-right: 6vw; }
+}

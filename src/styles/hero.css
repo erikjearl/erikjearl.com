@@ -79,3 +79,9 @@
   #hero .bg-layer img{animation:none;}
   .scroll-cue{animation:none;}
 }
+
+@media (max-width: 700px) {
+  #hero h1 { font-size: 2.7rem; }
+  .hero-role { font-size: 0.88rem; }
+  .scroll-cue { right: 6vw; }
+}

@@ -38,3 +38,10 @@
   color:var(--rope-bright);
   border-bottom-color:var(--rope-dim);
 }
+
+@media (max-width: 700px) {
+  #topnav { padding: 0.9rem 6vw 0.9rem calc(var(--rail-w) + 24px); }
+  #topnav .brand { white-space: nowrap; font-size: 1rem; }
+  #topnav ul { gap: 1.1rem; }
+  #topnav ul a { font-size: 0.58rem; letter-spacing: 0.12em; }
+}
