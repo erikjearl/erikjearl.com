@@ -1,0 +1,96 @@
+/* ============ iv. CONTACT (night summit) ============ */
+#contact{
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:linear-gradient(180deg, #89775f 0%, #6a5d68 18%, #3d3560 42%, var(--summit-indigo) 62%, var(--summit-ink) 100%);
+}
+#contact .bg-layer{opacity:.55;}
+#contact .bg-layer img{object-position:center 30%;}
+#contact .scrim{
+  background:radial-gradient(ellipse at 50% 28%, rgba(34,31,62,.05), rgba(19,18,38,.88) 78%);
+}
+#stars{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  border-radius:50%;
+  background:#fff;
+  opacity:0;
+  animation:twinkle var(--tw, 4s) ease-in-out infinite;
+  animation-delay:var(--td, 0s);
+}
+@keyframes twinkle{
+  0%,100%{opacity:0;}
+  50%{opacity:var(--to, .8);}
+}
+#contact .content{max-width:760px;margin:0 auto;}
+#contact .section-eyebrow{justify-content:center;}
+#contact h2{
+  font-size:3.8rem;
+  line-height:1.04;
+  margin-bottom:1.3rem;
+}
+#contact h2 em{font-style:italic;color:var(--rope-bright);font-weight:500;}
+#contact .lede{
+  font-size:1rem;
+  line-height:1.8;
+  opacity:.88;
+  max-width:540px;
+  margin:0 auto 2.6rem;
+}
+.contact-card{
+  border:1px solid rgba(241,236,225,.3);
+  background:rgba(255,255,255,.04);
+  padding:2.2rem 2.6rem;
+  text-align:left;
+  max-width:540px;
+  margin:0 auto;
+}
+.contact-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:.85rem 0;
+  border-top:1px dashed rgba(241,236,225,.22);
+  font-size:.9rem;
+}
+.contact-row:first-child{border-top:none;}
+.contact-row .k{opacity:.6;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;}
+.contact-row a{
+  text-decoration:none;
+  border-bottom:1px solid var(--rope-dim);
+  transition:border-color .2s ease, color .2s ease;
+}
+.contact-row a:hover{border-color:var(--rope);color:var(--rope-bright);}
+.resume-btn{
+  display:inline-block;
+  margin-top:2rem;
+  padding:.9rem 2.2rem;
+  border:1px solid var(--rope);
+  color:var(--rope-bright);
+  text-decoration:none;
+  font-size:.76rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  transition:background .25s ease, color .25s ease;
+}
+.resume-btn:hover{background:var(--rope);color:var(--summit-ink);}
+footer{
+  margin-top:4rem;
+  font-size:.66rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  opacity:.5;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .star{animation:none;opacity:.5;}
+}
