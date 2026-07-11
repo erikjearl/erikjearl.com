@@ -1,0 +1,40 @@
+#topnav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:600;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1.1rem 8vw 1.1rem calc(var(--rail-w) + 28px);
+  background:linear-gradient(180deg, rgba(12,16,13,.72), rgba(12,16,13,0));
+}
+#topnav .brand{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:600;
+  font-size:1.15rem;
+  text-decoration:none;
+  color:var(--paper);
+}
+#topnav ul{
+  display:flex;
+  gap:2.4rem;
+  list-style:none;
+}
+#topnav ul a{
+  font-size:.7rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  text-decoration:none;
+  opacity:.85;
+  padding-bottom:.3rem;
+  border-bottom:1px solid transparent;
+  transition:opacity .2s ease, border-color .2s ease, color .2s ease;
+}
+#topnav ul a:hover{
+  opacity:1;
+  color:var(--rope-bright);
+  border-bottom-color:var(--rope-dim);
+}
