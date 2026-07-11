@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Erik Earl — Software Engineer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,650&family=Fraunces:ital,opsz,wght@1,9..144,450&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:        #e7dcc8;
+    --sand-deep:   #cdb996;
+    --sage:        #7c8a6f;
+    --sage-deep:   #566150;
+    --granite:     #3d3c3a;
+    --granite-2:   #55534f;
+    --dusk:        #d98a72;
+    --dusk-pink:   #eab6ad;
+    --lavender:    #b7aecb;
+    --cream:       #faf6ee;
+    --ink:         #262420;
+    --line:        rgba(38,36,32,0.14);
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:400;
+    min-width:1280px;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--dusk); color:var(--cream); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{
+    max-width:1140px;
+    margin:0 auto;
+    padding:0 48px;
+  }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .9s cubic-bezier(.16,.8,.24,1), transform .9s cubic-bezier(.16,.8,.24,1);
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal-delay1{ transition-delay:.12s; }
+  .reveal-delay2{ transition-delay:.24s; }
+  .reveal-delay3{ transition-delay:.36s; }
+
+  /* ---------- topo decoration ---------- */
+  .topo-line{
+    position:absolute;
+    pointer-events:none;
+    opacity:.35;
+  }
+
+  /* =======================================================
+     NAV
+  ======================================================= */
+  header.nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:26px 48px;
+    mix-blend-mode:difference;
+  }
+  header.nav .mark{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:.02em;
+    color:#fff;
+  }
+  header.nav nav{ display:flex; gap:36px; }
+  header.nav nav a{
+    color:#fff;
+    font-size:13px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    font-weight:500;
+    position:relative;
+    padding-bottom:3px;
+  }
+  header.nav nav a::after{
+    content:'';
+    position:absolute; left:0; bottom:0;
+    width:0; height:1px;
+    background:#fff;
+    transition:width .35s ease;
+  }
+  header.nav nav a:hover::after{ width:100%; }
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:720px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    background:
+      linear-gradient(180deg, rgba(30,28,26,.15) 0%, rgba(20,18,17,.55) 78%, rgba(15,14,13,.72) 100%),
+      url('./assets/introck.jpg') center 32% / cover no-repeat;
+  }
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    padding:0 48px 88px;
+    max-width:1140px;
+    margin:0 auto;
+    width:100%;
+  }
+  .hero-eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--dusk-pink);
+    margin:0 0 22px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .hero-eyebrow .dash{
+    width:32px; height:1px;
+    background:var(--dusk-pink);
+    display:inline-block;
+  }
+  h1.hero-name{
+    font-family:var(--serif);
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:118px;
+    line-height:.92;
+    letter-spacing:-.01em;
+    color:#fdfbf6;
+    margin:0 0 20px;
+  }
+  h1.hero-name em{
+    font-style:italic;
+    font-weight:450;
+    color:var(--dusk-pink);
+  }
+  .hero-role{
+    font-family:var(--sans);
+    font-weight:300;
+    font-size:22px;
+    color:#e9e4d8;
+    max-width:640px;
+    line-height:1.5;
+    margin:0 0 40px;
+  }
+  .hero-role strong{ font-weight:500; color:#fff; }
+  .hero-cta{
+    display:flex;
+    gap:20px;
+    align-items:center;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:15px 30px;
+    font-size:13px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    font-weight:500;
+    border-radius:2px;
+    transition:all .3s ease;
+  }
+  .btn-solid{
+    background:var(--cream);
+    color:var(--ink);
+  }
+  .btn-solid:hover{ background:var(--dusk-pink); }
+  .btn-ghost{
+    border:1px solid rgba(250,246,238,.45);
+    color:#fdfbf6;
+  }
+  .btn-ghost:hover{ border-color:#fff; background:rgba(255,255,255,.08); }
+
+  .scroll-cue{
+    position:absolute;
+    right:48px; bottom:36px;
+    z-index:2;
+    color:#e9e4d8;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    writing-mode:vertical-rl;
+  }
+  .scroll-cue::after{
+    content:'';
+    width:1px; height:44px;
+    background:linear-gradient(#e9e4d8, transparent);
+    display:block;
+  }
+
+  .field-caption{
+    position:absolute;
+    left:48px; bottom:36px;
+    z-index:2;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:rgba(250,246,238,.75);
+    letter-spacing:.03em;
+    max-width:300px;
+  }
+  .field-caption .label{
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    color:var(--dusk-pink);
+    display:block;
+    margin-bottom:4px;
+    font-size:10.5px;
+  }
+
+  /* =======================================================
+     SECTION SCAFFOLDING
+  ======================================================= */
+  section{ position:relative; }
+  .section-pad{ padding:150px 0; }
+  .kicker{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--sage-deep);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:26px;
+  }
+  .kicker .num{ color:var(--dusk); }
+  .kicker::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  h2.section-title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:56px;
+    line-height:1.05;
+    letter-spacing:-.01em;
+    margin:0 0 0;
+    color:var(--ink);
+  }
+
+  /* =======================================================
+     ABOUT
+  ======================================================= */
+  .about{ background:var(--cream); }
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:80px;
+    margin-top:64px;
+    align-items:start;
+  }
+  .about-text p{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:27px;
+    line-height:1.55;
+    color:var(--granite);
+    margin:0 0 28px;
+  }
+  .about-text p.small{
+    font-family:var(--sans);
+    font-size:16.5px;
+    line-height:1.75;
+    color:var(--granite-2);
+    font-weight:400;
+  }
+  .about-text .accent{ color:var(--dusk); font-style:italic; font-family:var(--serif); }
+
+  .about-facts{
+    border-left:1px solid var(--line);
+    padding-left:40px;
+  }
+  .fact{ margin-bottom:30px; }
+  .fact:last-child{ margin-bottom:0; }
+  .fact .fact-label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--sage-deep);
+    margin-bottom:6px;
+  }
+  .fact .fact-value{
+    font-size:15.5px;
+    line-height:1.5;
+    color:var(--ink);
+    font-weight:500;
+  }
+  .fact .fact-value.mono{ font-family:var(--mono); font-weight:400; font-size:14.5px;}
+
+  .grade-tag{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11px;
+    padding:3px 9px;
+    border:1px solid var(--sage);
+    border-radius:20px;
+    color:var(--sage-deep);
+    margin-top:10px;
+    letter-spacing:.03em;
+  }
+
+  /* =======================================================
+     PHOTO INTERLUDE (fixed attachment)
+  ======================================================= */
+  .interlude{
+    height:78vh;
+    min-height:560px;
+    position:relative;
+    background-attachment:fixed;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    display:flex;
+    align-items:flex-end;
+  }
+  .interlude::before{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(20,18,16,.05) 0%, rgba(20,18,16,.65) 100%);
+  }
+  .interlude .field-caption{ left:48px; bottom:40px; }
+  .interlude .field-caption.right{ left:auto; right:48px; text-align:right; }
+
+  #interlude-elcap{ background-image:url('./assets/elcap.jpg'); background-position:center 30%; }
+  #interlude-rappel{ background-image:url('./assets/rappel.jpg'); background-position:center 40%; }
+  #interlude-jtree{ background-image:url('./assets/landscape.jpg'); background-position:center 55%; }
+
+  /* =======================================================
+     EXPERIENCE TIMELINE
+  ======================================================= */
+  .experience{ background:var(--cream); }
+  .timeline{
+    margin-top:70px;
+    position:relative;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left:174px;
+    top:10px; bottom:10px;
+    width:1px;
+    background:var(--line);
+  }
+  .tl-item{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:60px;
+    padding:38px 0;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .tl-item:first-child{ padding-top:0; }
+  .tl-item:last-child{ border-bottom:none; }
+  .tl-item::before{
+    content:'';
+    position:absolute;
+    left:170px; top:46px;
+    width:9px; height:9px;
+    border-radius:50%;
+    background:var(--cream);
+    border:2px solid var(--dusk);
+  }
+  .tl-item.current::before{ background:var(--dusk); }
+  .tl-date{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--sage-deep);
+    letter-spacing:.02em;
+    padding-top:4px;
+  }
+  .tl-role{
+    font-family:var(--serif);
+    font-size:26px;
+    font-weight:600;
+    color:var(--ink);
+    margin:0 0 6px;
+  }
+  .tl-org{
+    font-family:var(--sans);
+    font-size:14px;
+    font-weight:500;
+    color:var(--dusk);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:14px;
+  }
+  .tl-desc{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--granite-2);
+    max-width:640px;
+    margin:0;
+  }
+  .tl-desc.muted{ font-style:italic; color:var(--sage-deep); }
+  .tl-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:16px;
+  }
+  .tl-tags span{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--sage-deep);
+    background:rgba(124,138,111,.1);
+    border:1px solid rgba(124,138,111,.25);
+    padding:4px 10px;
+    border-radius:3px;
+  }
+
+  /* =======================================================
+     PROJECTS GRID
+  ======================================================= */
+  .projects{ background:#f2ecdf; position:relative; }
+  .projects-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:2px;
+    margin-top:70px;
+    background:var(--line);
+  }
+  .proj-card{
+    background:var(--cream);
+    padding:44px 36px;
+    display:flex;
+    flex-direction:column;
+    min-height:340px;
+    transition:background .35s ease, transform .35s ease;
+  }
+  .proj-card:hover{ background:#fdfbf6; transform:translateY(-4px); }
+  .proj-num{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--dusk);
+    letter-spacing:.08em;
+    margin-bottom:22px;
+  }
+  .proj-title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:24px;
+    line-height:1.2;
+    color:var(--ink);
+    margin:0 0 16px;
+  }
+  .proj-desc{
+    font-size:14.5px;
+    line-height:1.68;
+    color:var(--granite-2);
+    flex:1;
+    margin:0 0 20px;
+  }
+  .proj-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+  }
+  .proj-tags span{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--sage-deep);
+    letter-spacing:.02em;
+  }
+  .proj-tags span:not(:last-child)::after{ content:'·'; margin-left:7px; color:var(--sand-deep); }
+  .proj-context{
+    font-family:var(--mono);
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--sand-deep);
+    margin-top:18px;
+  }
+
+  /* =======================================================
+     SKILLS STRIP
+  ======================================================= */
+  .skills-strip{
+    background:var(--granite);
+    padding:56px 0;
+    overflow:hidden;
+  }
+  .skills-track{
+    display:flex;
+    gap:44px;
+    white-space:nowrap;
+    font-family:var(--serif);
+    font-size:28px;
+    font-weight:500;
+    color:rgba(250,246,238,.88);
+    align-items:center;
+  }
+  .skills-track span.sep{ color:var(--dusk); font-family:var(--sans); font-size:14px; }
+
+  /* =======================================================
+     CONTACT FOOTER
+  ======================================================= */
+  footer.contact{
+    position:relative;
+    background:linear-gradient(180deg, rgba(20,18,17,.35) 0%, rgba(15,14,13,.82) 100%), url('./assets/jtree.jpg') center 60% / cover no-repeat;
+    padding:170px 0 60px;
+    color:#fdfbf6;
+  }
+  .contact-inner{ text-align:left; }
+  .contact-kicker{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--dusk-pink);
+    margin-bottom:26px;
+  }
+  h2.contact-title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:74px;
+    line-height:1.05;
+    margin:0 0 44px;
+    max-width:780px;
+    color:#fdfbf6;
+  }
+  h2.contact-title em{ font-style:italic; font-weight:450; color:var(--dusk-pink); }
+  .contact-links{
+    display:flex;
+    gap:0;
+    flex-wrap:wrap;
+    border-top:1px solid rgba(250,246,238,.2);
+    margin-top:20px;
+  }
+  .contact-links a{
+    padding:26px 40px 26px 0;
+    margin-right:40px;
+    border-bottom:1px solid rgba(250,246,238,.2);
+    flex:1;
+    min-width:220px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:17px;
+    font-weight:500;
+    letter-spacing:.01em;
+    transition:opacity .3s ease;
+  }
+  .contact-links a:hover{ opacity:.6; }
+  .contact-links a .arrow{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--dusk-pink);
+    transition:transform .3s ease;
+  }
+  .contact-links a:hover .arrow{ transform:translate(4px,-4px); }
+
+  .foot-meta{
+    display:flex;
+    justify-content:space-between;
+    margin-top:90px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:rgba(250,246,238,.55);
+    letter-spacing:.04em;
+  }
+
+  /* topo svg accents */
+  .topo-corner{
+    position:absolute;
+    top:60px; right:0;
+    width:220px;
+    opacity:.5;
+    pointer-events:none;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="mark">Erik Earl</div>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow"><span class="dash"></span>Software Engineer · Platform &amp; DevOps</p>
+    <h1 class="hero-name">Erik<br><em>Earl.</em></h1>
+    <p class="hero-role">I build Kubernetes-native infrastructure by day and climb granite and desert sandstone by every other available hour. <strong>Currently at Applied Materials.</strong></p>
+    <div class="hero-cta">
+      <a class="btn btn-solid" href="#projects">View Projects</a>
+      <a class="btn btn-ghost" href="/resume">Resume ↗</a>
+    </div>
+  </div>
+  <div class="field-caption">
+    <span class="label">Field notes — 04</span>
+    Joshua Tree, dusk. Waxing moon over Intersection Rock, 6:58pm.
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about section-pad" id="about">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="num">01</span>About</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="reveal">I'm a platform engineer who specializes in <span class="accent">Kubernetes</span> — the kind of infrastructure work that's equal parts systems design and quiet problem solving.</p>
+        <p class="small reveal reveal-delay1">CKAD certified, with a B.S. in Computer Science (AI minor) from Case Western Reserve University, Cum Laude, December 2024. I care about building things that are reliable, legible, and don't page anyone at 3am.</p>
+        <p class="small reveal reveal-delay2">Outside of work I'm usually finding an excuse to be on rock — happiest on granite in Yosemite or desert sandstone in Joshua Tree, rope in hand, counting the ways a wall can be read.</p>
+      </div>
+      <div class="about-facts reveal reveal-delay2">
+        <div class="fact">
+          <div class="fact-label">Currently</div>
+          <div class="fact-value">Software Engineer, Applied Materials</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Certification</div>
+          <div class="fact-value mono">CKAD — Certified Kubernetes Application Developer</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Education</div>
+          <div class="fact-value">B.S. Computer Science, AI Minor<br>Case Western Reserve University — Cum Laude, Dec 2024</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Home crags</div>
+          <div class="fact-value">Yosemite Valley, CA · Joshua Tree, CA</div>
+          <div class="grade-tag">currently projecting 5.10c</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERLUDE: EL CAP ============ -->
+<div class="interlude" id="interlude-elcap">
+  <div class="field-caption">
+    <span class="label">Field notes — 01</span>
+    El Capitan, Yosemite Valley. 3,000 ft of granite, and a very small person for scale.
+  </div>
+</div>
+
+<!-- ================= EXPERIENCE ================= -->
+<section class="experience section-pad" id="experience">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="num">02</span>Experience</div>
+    <h2 class="section-title reveal">Where the work<br>has taken me.</h2>
+
+    <div class="timeline">
+      <div class="tl-item current reveal">
+        <div class="tl-date">2026 — Present</div>
+        <div>
+          <h3 class="tl-role">Software Engineer</h3>
+          <div class="tl-org">Applied Materials</div>
+          <p class="tl-desc muted">New chapter — details to come.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">Apr 2025 — 2026</div>
+        <div>
+          <h3 class="tl-role">Software Engineer, Platform &amp; DevOps</h3>
+          <div class="tl-org">Qualcomm</div>
+          <p class="tl-desc">Built a Kubernetes-native Database-as-a-Service platform, including a custom Python/Kopf operator managing MySQL, PostgreSQL, and MongoDB CRDs across clusters, with cross-cluster backup and restore via S3. Led an RKE1 → RKE2 migration alongside a Calico → Cilium CNI transition. Wrote a custom ExternalDNS webhook provider for BlueCat DNS and administered the shared Jenkins CI/CD platform.</p>
+          <div class="tl-tags">
+            <span>Kubernetes Operators</span>
+            <span>Python / Kopf</span>
+            <span>Cilium</span>
+            <span>Jenkins</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">2023 &amp; 2024</div>
+        <div>
+          <h3 class="tl-role">Software Engineer Intern</h3>
+          <div class="tl-org">Qualcomm</div>
+          <p class="tl-desc">Automated TLS certificate issuance with cert-manager and a custom Python Kubernetes operator. Built Django REST APIs for IP lifecycle management, cutting manual approval overhead by roughly 80%.</p>
+          <div class="tl-tags">
+            <span>cert-manager</span>
+            <span>Django REST</span>
+            <span>Python</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">2022 — 2023</div>
+        <div>
+          <h3 class="tl-role">Software Engineering Co-op</h3>
+          <div class="tl-org">Lubrizol</div>
+          <p class="tl-desc">Built internal automation tooling in Bash, C++, and JavaScript to streamline engineering workflows.</p>
+          <div class="tl-tags">
+            <span>Bash</span>
+            <span>C++</span>
+            <span>JavaScript</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERLUDE: RAPPEL ============ -->
+<div class="interlude" id="interlude-rappel">
+  <div class="field-caption right">
+    <span class="label">Field notes — 02</span>
+    Red rock exposure on rappel. Grinning because the anchor held.
+  </div>
+</div>
+
+<!-- ================= PROJECTS ================= -->
+<section class="projects section-pad" id="projects">
+  <div class="wrap">
+    <div class="kicker reveal"><span class="num">03</span>Projects</div>
+    <h2 class="section-title reveal">Things I've built<br>on my own time.</h2>
+  </div>
+
+  <div class="projects-grid">
+    <div class="proj-card reveal">
+      <div class="proj-num">Home lab / 01</div>
+      <h3 class="proj-title">Minecraft Server Deployment Platform</h3>
+      <p class="proj-desc">A Kubernetes operator and set of CRDs that provision containerized Minecraft servers on demand, fronted by a Flask control plane exposing REST APIs for lifecycle management.</p>
+      <div class="proj-tags"><span>Kubernetes</span><span>CRDs</span><span>Flask</span></div>
+      <div class="proj-context">Home lab</div>
+    </div>
+
+    <div class="proj-card reveal reveal-delay1">
+      <div class="proj-num">Home lab / 02</div>
+      <h3 class="proj-title">Climbing Data AI Platform</h3>
+      <p class="proj-desc">A TypeScript MCP server exposing AI-queryable APIs over millions of crowd-sourced Mountain Project climbing records, backed by self-hosted Kubernetes data pipelines.</p>
+      <div class="proj-tags"><span>TypeScript</span><span>MCP</span><span>Kubernetes</span></div>
+      <div class="proj-context">Home lab</div>
+    </div>
+
+    <div class="proj-card reveal reveal-delay2">
+      <div class="proj-num">Capstone / 03</div>
+      <h3 class="proj-title">Manga Translation Pipeline</h3>
+      <p class="proj-desc">A computer vision pipeline covering detection, segmentation, OCR, and translation, built around a PyTorch ResNet34 U-Net architecture.</p>
+      <div class="proj-tags"><span>PyTorch</span><span>Computer Vision</span><span>OCR</span></div>
+      <div class="proj-context">Senior capstone</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERLUDE: JTREE DUSK ============ -->
+<div class="interlude" id="interlude-jtree">
+  <div class="field-caption">
+    <span class="label">Field notes — 03</span>
+    Joshua Tree, wide panorama. The pink band right before the light goes.
+  </div>
+</div>
+
+<!-- ================= SKILLS ================= -->
+<section class="skills-strip">
+  <div class="skills-track" id="skillsTrack">
+    <span>Python</span><span class="sep">·</span>
+    <span>Go</span><span class="sep">·</span>
+    <span>TypeScript</span><span class="sep">·</span>
+    <span>SQL</span><span class="sep">·</span>
+    <span>Bash</span><span class="sep">·</span>
+    <span>Kubernetes</span><span class="sep">·</span>
+    <span>Docker</span><span class="sep">·</span>
+    <span>Helm</span><span class="sep">·</span>
+    <span>Terraform</span><span class="sep">·</span>
+    <span>Grafana</span><span class="sep">·</span>
+    <span>Prometheus</span><span class="sep">·</span>
+    <span>AWS</span><span class="sep">·</span>
+    <span>Jenkins</span><span class="sep">·</span>
+    <span>GitOps</span><span class="sep">·</span>
+    <span>Linux</span>
+  </div>
+</section>
+
+<!-- ================= CONTACT / FOOTER ================= -->
+<footer class="contact" id="contact">
+  <div class="wrap contact-inner">
+    <div class="contact-kicker reveal">04 · Get in touch</div>
+    <h2 class="contact-title reveal">Always up for talking<br>infrastructure, or where<br>to climb <em>next.</em></h2>
+
+    <div class="contact-links reveal">
+      <a href="mailto:erikjearl@gmail.com">erikjearl@gmail.com <span class="arrow">↗</span></a>
+      <a href="https://github.com/erikjearl" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
+      <a href="https://linkedin.com/in/erikjearl" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
+      <a href="/resume">Resume <span class="arrow">↗</span></a>
+    </div>
+
+    <div class="foot-meta">
+      <span>© 2026 Erik Earl</span>
+      <span>Joshua Tree · Yosemite · Somewhere in between</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // IntersectionObserver-driven reveal animation
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => io.observe(el));
+
+  // climbing-grade easter egg in the console
+  console.log('%cYou made it to the top.', 'font-family: monospace; font-size: 14px; color: #d98a72;');
+  console.log('%cRoute: erikjearl.com — Grade: 5.9, mostly bolted, one runout near the footer.', 'font-family: monospace; font-size: 12px; color: #7c8a6f;');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+# dependencies / build (for the upcoming Vite app)
+node_modules/
+dist/
+
+# macOS
+.DS_Store
+
+# scratch
+mockups/.shot-tmp.html
+
+# Original photos: large + may contain EXIF/GPS metadata.
+# Remove this line if you decide to version them in the (public) repo.
+media/

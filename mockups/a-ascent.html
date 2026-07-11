@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Erik Earl — Software Engineer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --valley-dark:#141c17;
+    --valley-green:#2e4a34;
+    --granite:#8b8d86;
+    --rock-warm:#5a4536;
+    --rust:#a8532e;
+    --sandstone:#c46a34;
+    --sandstone-deep:#7a3a1f;
+    --dusk-lav:#7c6a93;
+    --dusk-pink:#d98a83;
+    --summit-ink:#1a1a2e;
+    --summit-indigo:#2b2450;
+    --paper:#f3ede2;
+    --paper-dim:#e7ddc9;
+    --ink:#1c1912;
+    --rope:#e8c15a;
+    --rope-dim:rgba(232,193,90,.28);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--valley-dark);
+    color:var(--paper);
+    overflow-x:hidden;
+    min-width:1280px;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:.28em;
+    font-size:.72rem;
+    opacity:.72;
+  }
+  a{color:inherit;}
+  img{display:block;width:100%;height:100%;object-fit:cover;}
+
+  /* ---------- ROUTE LINE / PROGRESS ---------- */
+  #route-line{
+    position:fixed;
+    left:38px;
+    top:0;
+    bottom:0;
+    width:60px;
+    z-index:500;
+    pointer-events:none;
+  }
+  #route-line .track{
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:2px;
+    transform:translateX(-50%);
+    background:linear-gradient(to bottom, rgba(243,237,226,.14), rgba(243,237,226,.14));
+  }
+  #route-line .fill{
+    position:absolute;
+    left:50%;
+    top:0;
+    width:3px;
+    height:0%;
+    transform:translateX(-50%);
+    background:linear-gradient(to bottom, var(--rope), #f4d98a);
+    box-shadow:0 0 10px 1px var(--rope-dim);
+    transition:height .08s linear;
+  }
+  .anchor{
+    position:absolute;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    background:var(--valley-dark);
+    border:2px solid rgba(243,237,226,.5);
+    cursor:pointer;
+    pointer-events:all;
+    transition:all .25s ease;
+  }
+  .anchor::after{
+    content:attr(data-label);
+    position:absolute;
+    left:26px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:.66rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    opacity:0;
+    transition:opacity .2s ease;
+    background:rgba(20,28,23,.85);
+    padding:4px 8px;
+    border:1px solid rgba(243,237,226,.2);
+  }
+  .anchor:hover::after{opacity:1;}
+  .anchor.passed{
+    background:var(--rope);
+    border-color:var(--rope);
+    box-shadow:0 0 12px 2px var(--rope-dim);
+  }
+  .anchor.active{
+    width:19px;height:19px;
+    background:var(--rope);
+    border-color:#fff;
+  }
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  section{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:6rem 8vw 6rem 130px;
+    overflow:hidden;
+  }
+  .bg-layer{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    will-change:transform;
+  }
+  .bg-layer img{
+    position:absolute;
+    top:-8%;
+    left:0;
+    width:100%;
+    height:116%;
+  }
+  .scrim{
+    position:absolute;
+    inset:0;
+    z-index:1;
+  }
+  .content{
+    position:relative;
+    z-index:2;
+    width:100%;
+  }
+  .reveal{
+    opacity:0;
+    transform:translateY(38px);
+    transition:opacity .9s cubic-bezier(.16,.8,.3,1), transform .9s cubic-bezier(.16,.8,.3,1);
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal.d1{transition-delay:.1s;}
+  .reveal.d2{transition-delay:.22s;}
+  .reveal.d3{transition-delay:.34s;}
+  .reveal.d4{transition-delay:.46s;}
+
+  /* ---------- HERO ---------- */
+  #hero{
+    padding-left:130px;
+    align-items:flex-end;
+    padding-bottom:5rem;
+  }
+  #hero .bg-layer img{ top:-4%; height:112%; }
+  #hero .scrim{
+    background:linear-gradient(180deg, rgba(10,14,11,.15) 0%, rgba(10,14,11,.2) 45%, rgba(12,16,13,.88) 100%);
+  }
+  .hero-eyebrow{
+    font-size:.78rem;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--rope);
+    margin-bottom:1.4rem;
+  }
+  #hero h1{
+    font-size:6.2rem;
+    line-height:.94;
+    color:var(--paper);
+    text-shadow:0 4px 30px rgba(0,0,0,.4);
+  }
+  #hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:#f4d98a;
+  }
+  .hero-role{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1.05rem;
+    margin-top:1.3rem;
+    max-width:640px;
+    opacity:.92;
+    line-height:1.6;
+  }
+  .hero-role .co{color:var(--rope);font-weight:600;}
+  .scroll-cue{
+    position:absolute;
+    bottom:2.6rem;
+    left:130px;
+    display:flex;
+    align-items:center;
+    gap:.9rem;
+    font-size:.72rem;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    opacity:.85;
+    animation:bob 2.4s ease-in-out infinite;
+  }
+  .scroll-cue .arrow{
+    width:1px;height:34px;
+    background:linear-gradient(to bottom, var(--rope), transparent);
+    position:relative;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(8px);}
+  }
+
+  /* ---------- APPROACH (about) ---------- */
+  #approach{
+    background:linear-gradient(180deg, var(--valley-dark), #24301f 60%, var(--rock-warm) 100%);
+  }
+  #approach .bg-layer{ right:0; left:auto; width:46%; }
+  #approach .bg-layer img{
+    border-radius:2px;
+    filter:saturate(1.05) contrast(1.03);
+  }
+  #approach .scrim{
+    background:linear-gradient(90deg, var(--valley-dark) 0%, var(--valley-dark) 40%, rgba(20,28,23,.55) 58%, transparent 78%);
+  }
+  .approach-frame{
+    position:absolute;
+    right:8vw;
+    top:50%;
+    transform:translateY(-50%);
+    width:38%;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    border:1px solid rgba(243,237,226,.25);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
+  }
+  .approach-frame .cap{
+    position:absolute;
+    bottom:0;left:0;right:0;
+    padding:.9rem 1.1rem;
+    background:linear-gradient(0deg, rgba(10,10,10,.85), transparent);
+    font-size:.68rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .section-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:.9rem;
+    margin-bottom:1.6rem;
+  }
+  .section-eyebrow .num{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--rope);
+  }
+  #approach h2{
+    font-size:3.6rem;
+    max-width:600px;
+    line-height:1.02;
+    margin-bottom:1.6rem;
+  }
+  #approach p{
+    max-width:520px;
+    font-size:1.02rem;
+    line-height:1.85;
+    opacity:.9;
+  }
+  #approach p + p{margin-top:1.1rem;}
+  .tag-row{
+    display:flex;
+    gap:.6rem;
+    flex-wrap:wrap;
+    margin-top:1.8rem;
+    max-width:520px;
+  }
+  .tag-row span{
+    font-size:.68rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border:1px solid rgba(243,237,226,.3);
+    padding:.4rem .8rem;
+    border-radius:20px;
+    opacity:.85;
+  }
+
+  /* ---------- PITCHES (experience) ---------- */
+  #pitches{
+    flex-direction:column;
+    align-items:stretch;
+    padding:7rem 0 5rem 0;
+    background:
+      linear-gradient(180deg, var(--rock-warm) 0%, #6b3f27 22%, var(--sandstone-deep) 55%, var(--sandstone) 100%);
+  }
+  #pitches .bg-layer{ opacity:.16; mix-blend-mode:luminosity; }
+  #pitches .bg-layer img{ object-position:center top; filter:sepia(.3) contrast(1.1); }
+  .pitches-head{
+    padding:0 8vw 0 130px;
+    margin-bottom:4.5rem;
+    position:relative;
+    z-index:2;
+  }
+  .pitches-head h2{font-size:3.6rem;}
+  .pitches-head .sub{
+    margin-top:.8rem;
+    font-size:.95rem;
+    opacity:.85;
+    max-width:560px;
+    line-height:1.7;
+  }
+  .pitch{
+    position:relative;
+    z-index:2;
+    padding:2.6rem 8vw 2.6rem 130px;
+    border-top:1px solid rgba(243,237,226,.18);
+    display:grid;
+    grid-template-columns:100px 1fr 220px;
+    gap:2.5rem;
+    align-items:start;
+  }
+  .pitch:last-child{border-bottom:1px solid rgba(243,237,226,.18);}
+  .pitch .grade{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-style:italic;
+    font-size:1.9rem;
+    color:var(--rope);
+    line-height:1.1;
+    padding-top:.2rem;
+  }
+  .pitch .grade small{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-style:normal;
+    font-weight:400;
+    font-size:.62rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--paper);
+    opacity:.6;
+    margin-top:.35rem;
+  }
+  .pitch h3{
+    font-size:1.7rem;
+    margin-bottom:.35rem;
+  }
+  .pitch .co-role{
+    font-size:.82rem;
+    letter-spacing:.05em;
+    color:#f4d98a;
+    margin-bottom:.9rem;
+    text-transform:uppercase;
+  }
+  .pitch p{
+    font-size:.92rem;
+    line-height:1.75;
+    opacity:.92;
+    max-width:640px;
+  }
+  .pitch .beta{
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.7;
+    border-left:2px solid var(--rope-dim);
+    padding-left:1rem;
+    line-height:1.9;
+    justify-self:end;
+    text-align:left;
+  }
+
+  /* ---------- CRUX (projects) ---------- */
+  #crux{
+    flex-direction:column;
+    align-items:stretch;
+    padding:7rem 8vw 6rem 130px;
+    background:linear-gradient(180deg, var(--sandstone) 0%, #b96a54 30%, var(--dusk-pink) 65%, var(--dusk-lav) 100%);
+  }
+  .crux-head h2{font-size:3.6rem;max-width:700px;}
+  .crux-head .sub{
+    margin-top:1rem;
+    font-size:.95rem;
+    max-width:560px;
+    line-height:1.7;
+    opacity:.9;
+  }
+  .crux-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1.8rem;
+    margin-top:3.6rem;
+  }
+  .crux-card{
+    background:rgba(20,14,20,.28);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter:blur(6px);
+    padding:1.9rem 1.7rem 2.1rem;
+    display:flex;
+    flex-direction:column;
+    min-height:340px;
+  }
+  .crux-card .pnum{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    color:#fff2c4;
+    font-size:1.1rem;
+    margin-bottom:1rem;
+  }
+  .crux-card h3{
+    font-size:1.35rem;
+    line-height:1.2;
+    margin-bottom:.9rem;
+  }
+  .crux-card p{
+    font-size:.86rem;
+    line-height:1.7;
+    opacity:.92;
+    flex:1;
+  }
+  .crux-card .stack{
+    margin-top:1.2rem;
+    font-size:.66rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    opacity:.78;
+    border-top:1px solid rgba(255,255,255,.2);
+    padding-top:.9rem;
+  }
+  .crux-card .tick{
+    margin-top:1rem;
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#fff2c4;
+  }
+
+  /* ---------- SUMMIT (contact) ---------- */
+  #summit{
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:linear-gradient(180deg, var(--dusk-lav) 0%, #463a6e 30%, var(--summit-indigo) 62%, var(--summit-ink) 100%);
+    padding:7rem 8vw;
+  }
+  #summit .bg-layer{ opacity:.35; }
+  #summit .bg-layer img{ object-position:center 30%; }
+  #summit .scrim{
+    background:radial-gradient(ellipse at 50% 30%, rgba(43,36,80,.2), rgba(26,26,46,.92) 75%);
+  }
+  #summit .content{ max-width:780px; margin:0 auto; }
+  .summit-mark{
+    font-size:.75rem;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--rope);
+    margin-bottom:1.6rem;
+  }
+  #summit h2{
+    font-size:4rem;
+    line-height:1.04;
+    margin-bottom:1.3rem;
+  }
+  #summit h2 em{font-style:italic;color:#f4d98a;font-weight:500;}
+  #summit .lede{
+    font-size:1.02rem;
+    line-height:1.8;
+    opacity:.88;
+    max-width:560px;
+    margin:0 auto 2.6rem;
+  }
+  .register{
+    border:1px solid rgba(243,237,226,.3);
+    background:rgba(255,255,255,.04);
+    padding:2.4rem 2.6rem;
+    text-align:left;
+    max-width:560px;
+    margin:0 auto;
+  }
+  .register .title{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    margin-bottom:1.3rem;
+    color:var(--rope);
+    text-align:center;
+  }
+  .register-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.85rem 0;
+    border-top:1px dashed rgba(243,237,226,.22);
+    font-size:.92rem;
+  }
+  .register-row:first-of-type{border-top:none;}
+  .register-row .k{opacity:.6;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;}
+  .register-row a{
+    text-decoration:none;
+    border-bottom:1px solid var(--rope-dim);
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .register-row a:hover{border-color:var(--rope); color:#f4d98a;}
+  .resume-btn{
+    display:inline-block;
+    margin-top:2rem;
+    padding:.9rem 2.2rem;
+    border:1px solid var(--rope);
+    color:#f4d98a;
+    text-decoration:none;
+    font-size:.78rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    transition:all .25s ease;
+  }
+  .resume-btn:hover{ background:var(--rope); color:var(--summit-ink); }
+  footer{
+    margin-top:4rem;
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.5;
+  }
+</style>
+</head>
+<body>
+
+<nav id="route-line">
+  <div class="track"></div>
+  <div class="fill" id="rope-fill"></div>
+  <div class="anchor" data-target="hero" data-label="Top" style="top:6%"></div>
+  <div class="anchor" data-target="approach" data-label="About" style="top:24%"></div>
+  <div class="anchor" data-target="pitches" data-label="Experience" style="top:48%"></div>
+  <div class="anchor" data-target="crux" data-label="Projects" style="top:74%"></div>
+  <div class="anchor" data-target="summit" data-label="Contact" style="top:94%"></div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="bg-layer" data-speed="0.15"><img src="./assets/elcap.jpg" alt="El Capitan rising from the Yosemite valley floor"></div>
+  <div class="scrim"></div>
+  <div class="content">
+    <div class="hero-eyebrow reveal in">Yosemite Valley, California</div>
+    <h1 class="reveal in">Erik Earl<br><em>Software&nbsp;Engineer</em></h1>
+    <p class="hero-role reveal in d1">Currently building at <span class="co">Applied Materials</span>. Platform &amp; DevOps engineer who spends weekdays in Kubernetes clusters and weekends on granite.</p>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <span class="arrow"></span>
+  </div>
+</section>
+
+<!-- ============ APPROACH (About) ============ -->
+<section id="approach">
+  <div class="bg-layer" data-speed="0.08"><img src="./assets/rappel.jpg" alt="Erik on rappel above red rock exposure, smiling"></div>
+  <div class="scrim"></div>
+  <div class="approach-frame reveal">
+    <img src="./assets/rappel.jpg" alt="Erik on rappel">
+    <div class="cap">400ft of air below — somewhere in red rock country</div>
+  </div>
+  <div class="content" style="max-width:600px;">
+    <div class="section-eyebrow reveal">
+      <span class="num">i.</span>
+      <span class="eyebrow">The Approach</span>
+    </div>
+    <h2 class="reveal d1">Hi, I'm Erik.</h2>
+    <p class="reveal d2">I'm a Platform &amp; DevOps engineer specializing in Kubernetes — CKAD certified, currently a software engineer at Applied Materials. I hold a B.S. in Computer Science with an AI minor from Case Western Reserve University, graduated Cum Laude in December 2024.</p>
+    <p class="reveal d3">Outside of work I'm a rock climber and hiker, happiest on granite in Yosemite or desert rock in Joshua Tree.</p>
+    <div class="tag-row reveal d4">
+      <span>Kubernetes</span><span>CKAD Certified</span><span>Platform Engineering</span><span>Trad Climber</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PITCHES (Experience) ============ -->
+<section id="pitches">
+  <div class="bg-layer" data-speed="0.05"><img src="./assets/topo.jpg" alt="Topo overlay of climbing routes on a granite face"></div>
+  <div class="pitches-head">
+    <div class="section-eyebrow reveal">
+      <span class="num">ii.</span>
+      <span class="eyebrow">Experience</span>
+    </div>
+    <h2 class="reveal d1">Where I've worked.</h2>
+    <p class="sub reveal d2">Four years of building platforms, automating infrastructure, and shipping tools other engineers rely on.</p>
+  </div>
+
+  <div class="pitch reveal">
+    <div class="grade">2026<small>Present</small></div>
+    <div>
+      <div class="co-role">Applied Materials</div>
+      <h3>Software Engineer</h3>
+      <p>Just getting started — more to come.</p>
+    </div>
+    <div class="beta">New chapter</div>
+  </div>
+
+  <div class="pitch reveal">
+    <div class="grade">2025<small>— 2026</small></div>
+    <div>
+      <div class="co-role">Qualcomm</div>
+      <h3>Software Engineer, Platform &amp; DevOps</h3>
+      <p>Built a Kubernetes-native Database-as-a-Service platform from the ground up, including a custom Python/Kopf operator managing MySQL, PostgreSQL, and MongoDB CRDs across clusters, with cross-cluster backup and restore via S3. Led the RKE1 → RKE2 migration alongside a Calico → Cilium CNI transition, shipped a custom ExternalDNS webhook provider for BlueCat DNS, and administered the shared Jenkins CI/CD platform.</p>
+    </div>
+    <div class="beta">Kubernetes<br>Python · Kopf<br>Cilium · Jenkins</div>
+  </div>
+
+  <div class="pitch reveal">
+    <div class="grade">2023<small>&amp; 2024</small></div>
+    <div>
+      <div class="co-role">Qualcomm</div>
+      <h3>Software Engineer Intern</h3>
+      <p>Automated TLS certificate issuance with cert-manager and a custom Python Kubernetes operator. Built Django REST APIs for IP lifecycle management that cut manual approval work by roughly 80%.</p>
+    </div>
+    <div class="beta">Cert-Manager<br>Python · Django</div>
+  </div>
+
+  <div class="pitch reveal">
+    <div class="grade">2022<small>— 2023</small></div>
+    <div>
+      <div class="co-role">Lubrizol</div>
+      <h3>Software Engineering Co-op</h3>
+      <p>Built internal automation tooling and software solutions in Bash, C++, and JavaScript.</p>
+    </div>
+    <div class="beta">Bash · C++<br>JavaScript</div>
+  </div>
+</section>
+
+<!-- ============ CRUX (Projects) ============ -->
+<section id="crux">
+  <div class="bg-layer" data-speed="0.06" style="opacity:.22;mix-blend-mode:overlay;"><img src="./assets/sandstone.jpg" alt="Climber leading a steep sandstone wall"></div>
+  <div class="crux-head content">
+    <div class="section-eyebrow reveal">
+      <span class="num">iii.</span>
+      <span class="eyebrow">Projects</span>
+    </div>
+    <h2 class="reveal d1">Selected projects.</h2>
+    <p class="sub reveal d2">Side projects built for the love of the problem — most of them running on a Kubernetes cluster in my home lab.</p>
+  </div>
+  <div class="crux-grid content">
+    <div class="crux-card reveal d1">
+      <div class="pnum">01</div>
+      <h3>Minecraft Server Deployment Platform</h3>
+      <p>A Kubernetes operator and set of CRDs that provision containerized Minecraft servers on demand, fronted by a Flask control plane exposing REST APIs for spin-up, teardown, and management.</p>
+      <div class="stack">Kubernetes · CRDs · Flask · Python</div>
+      <div class="tick">Home lab build</div>
+    </div>
+    <div class="crux-card reveal d2">
+      <div class="pnum">02</div>
+      <h3>Climbing Data AI Platform</h3>
+      <p>A TypeScript MCP server exposing AI-queryable APIs over millions of crowd-sourced Mountain Project climbing records, backed by self-hosted Kubernetes data pipelines.</p>
+      <div class="stack">TypeScript · MCP · Kubernetes · Data Pipelines</div>
+      <div class="tick">Home lab build</div>
+    </div>
+    <div class="crux-card reveal d3">
+      <div class="pnum">03</div>
+      <h3>Manga Translation Pipeline</h3>
+      <p>A computer vision pipeline covering detection, segmentation, OCR, and translation, built around a PyTorch ResNet34 U-Net for panel and text segmentation.</p>
+      <div class="stack">PyTorch · ResNet34 U-Net · Computer Vision</div>
+      <div class="tick">Senior capstone</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUMMIT (Contact) ============ -->
+<section id="summit">
+  <div class="bg-layer" data-speed="0.1"><img src="./assets/introck.jpg" alt="Joshua Tree rock formation at dusk with the moon rising"></div>
+  <div class="scrim"></div>
+  <div class="content">
+    <div class="summit-mark reveal">iv. Contact</div>
+    <h2 class="reveal d1">Get in <em>touch.</em></h2>
+    <p class="lede reveal d2">Whether it's about work, climbing, or anything in between — my inbox is open.</p>
+    <div class="register reveal d3">
+      <div class="register-row"><span class="k">Email</span><a href="mailto:erikjearl@gmail.com">erikjearl@gmail.com</a></div>
+      <div class="register-row"><span class="k">GitHub</span><a href="https://github.com/erikjearl" target="_blank" rel="noopener">github.com/erikjearl</a></div>
+      <div class="register-row"><span class="k">LinkedIn</span><a href="https://linkedin.com/in/erikjearl" target="_blank" rel="noopener">linkedin.com/in/erikjearl</a></div>
+    </div>
+    <a class="resume-btn reveal d4" href="/resume">Download Resume</a>
+    <footer>© 2026 Erik Earl</footer>
+  </div>
+</section>
+
+<script>
+(function(){
+  // ---------- Rope fill + anchor progress ----------
+  var fill = document.getElementById('rope-fill');
+  var anchors = Array.prototype.slice.call(document.querySelectorAll('.anchor'));
+  var sections = anchors.map(function(a){ return document.getElementById(a.dataset.target); });
+
+  function onScroll(){
+    var doc = document.documentElement;
+    var scrollTop = window.scrollY;
+    var scrollH = doc.scrollHeight - window.innerHeight;
+    var pct = scrollH > 0 ? (scrollTop / scrollH) * 100 : 0;
+    fill.style.height = pct + '%';
+
+    // determine which section is active
+    var mid = scrollTop + window.innerHeight * 0.4;
+    var activeIdx = 0;
+    sections.forEach(function(sec, i){
+      if(sec && sec.offsetTop <= mid) activeIdx = i;
+    });
+
+    anchors.forEach(function(a, i){
+      a.classList.toggle('passed', i <= activeIdx);
+      a.classList.toggle('active', i === activeIdx);
+    });
+
+    // parallax
+    parallaxEls.forEach(function(el){
+      var speed = parseFloat(el.dataset.speed || 0);
+      var rect = el.parentElement.getBoundingClientRect();
+      var offset = rect.top * speed;
+      el.style.transform = 'translateY(' + offset + 'px)';
+    });
+  }
+
+  var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('.bg-layer'));
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  anchors.forEach(function(a){
+    a.addEventListener('click', function(){
+      var target = document.getElementById(a.dataset.target);
+      if(target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ---------- Reveal on scroll ----------
+  var revealEls = document.querySelectorAll('.reveal:not(.in)');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  revealEls.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>

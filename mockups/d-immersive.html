@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Erik Earl — Software Engineer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --valley-dark:#101612;
+    --valley-green:#2c4632;
+    --rock-warm:#54402f;
+    --sandstone:#c46a34;
+    --sandstone-deep:#71351b;
+    --dusk-pink:#d98a83;
+    --dusk-lav:#75648c;
+    --summit-indigo:#221f3e;
+    --summit-ink:#131226;
+    --paper:#f1ece1;
+    --ink:#1c1912;
+    --rope:#e8c15a;
+    --rope-bright:#f4d98a;
+    --rope-dim:rgba(232,193,90,.3);
+    --rail-w:112px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--valley-dark);
+    color:var(--paper);
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img{display:block;width:100%;height:100%;object-fit:cover;}
+  :focus-visible{outline:2px solid var(--rope);outline-offset:3px;}
+
+  /* film grain over everything */
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:900;
+    pointer-events:none;
+    opacity:.055;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ TOP NAV ============ */
+  #topnav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:600;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.1rem 8vw 1.1rem calc(var(--rail-w) + 28px);
+    background:linear-gradient(180deg, rgba(12,16,13,.72), rgba(12,16,13,0));
+  }
+  #topnav .brand{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.15rem;
+    text-decoration:none;
+    color:var(--paper);
+  }
+  #topnav ul{
+    display:flex;
+    gap:2.4rem;
+    list-style:none;
+  }
+  #topnav ul a{
+    font-size:.7rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    text-decoration:none;
+    opacity:.85;
+    padding-bottom:.3rem;
+    border-bottom:1px solid transparent;
+    transition:opacity .2s ease, border-color .2s ease, color .2s ease;
+  }
+  #topnav ul a:hover{
+    opacity:1;
+    color:var(--rope-bright);
+    border-bottom-color:var(--rope-dim);
+  }
+
+  /* ============ ALTIMETER RAIL ============ */
+  #rail{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:var(--rail-w);
+    z-index:500;
+  }
+  #rail svg{
+    position:absolute;
+    left:34px;
+    top:0;
+    width:44px;
+    height:100%;
+  }
+  #rail .track{
+    fill:none;
+    stroke:rgba(241,236,225,.16);
+    stroke-width:1.5;
+  }
+  #rail .fill{
+    fill:none;
+    stroke:var(--rope);
+    stroke-width:2.5;
+    stroke-linecap:round;
+    filter:drop-shadow(0 0 5px var(--rope-dim));
+  }
+  .anchor{
+    position:absolute;
+    left:56px;
+    transform:translate(-50%,-50%);
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--valley-dark);
+    border:2px solid rgba(241,236,225,.5);
+    cursor:pointer;
+    padding:0;
+    transition:background .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .anchor::after{
+    content:attr(data-label);
+    position:absolute;
+    left:24px;
+    top:50%;
+    transform:translateY(-50%);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.62rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--paper);
+    white-space:nowrap;
+    opacity:0;
+    transition:opacity .2s ease;
+    background:rgba(16,22,18,.88);
+    padding:4px 9px;
+    border:1px solid rgba(241,236,225,.22);
+  }
+  .anchor:hover::after,.anchor:focus-visible::after{opacity:1;}
+  .anchor.passed{
+    background:var(--rope);
+    border-color:var(--rope);
+    box-shadow:0 0 10px 2px var(--rope-dim);
+  }
+  .anchor.active{
+    background:var(--rope-bright);
+    border-color:#fff;
+    box-shadow:0 0 14px 3px var(--rope-dim);
+  }
+  /* ============ SECTION SCAFFOLDING ============ */
+  section{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:6rem 8vw 6rem calc(var(--rail-w) + 28px);
+    overflow:hidden;
+  }
+  .bg-layer{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    will-change:transform;
+  }
+  .bg-layer img{
+    position:absolute;
+    top:-8%;
+    left:0;
+    width:100%;
+    height:116%;
+  }
+  .scrim{position:absolute;inset:0;z-index:1;}
+  .content{position:relative;z-index:2;width:100%;}
+  .reveal{
+    opacity:0;
+    transform:translateY(38px);
+    transition:opacity .9s cubic-bezier(.16,.8,.3,1), transform .9s cubic-bezier(.16,.8,.3,1);
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal.d1{transition-delay:.1s;}
+  .reveal.d2{transition-delay:.22s;}
+  .reveal.d3{transition-delay:.34s;}
+  .reveal.d4{transition-delay:.46s;}
+  .section-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:.9rem;
+    margin-bottom:1.6rem;
+  }
+  .section-eyebrow .num{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--rope);
+  }
+  .section-eyebrow .name{
+    font-size:.72rem;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    opacity:.72;
+  }
+
+  /* ============ HERO ============ */
+  #hero{
+    align-items:flex-end;
+    padding-bottom:5rem;
+  }
+  #hero .bg-layer img{
+    top:-4%;
+    height:112%;
+    transform-origin:50% 35%;
+    animation:kenburns 7s cubic-bezier(.2,.6,.3,1) both;
+  }
+  @keyframes kenburns{
+    from{transform:scale(1.09);}
+    to{transform:scale(1);}
+  }
+  #hero .scrim{
+    background:linear-gradient(180deg, rgba(8,12,9,.12) 0%, rgba(8,12,9,.18) 45%, rgba(10,14,11,.9) 100%);
+  }
+  .hero-stamp{
+    display:inline-flex;
+    align-items:center;
+    gap:.8rem;
+    font-size:.72rem;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:var(--rope);
+    margin-bottom:1.5rem;
+  }
+  .hero-stamp::before,
+  .hero-stamp::after{
+    content:"";
+    width:34px;
+    height:1px;
+    background:var(--rope-dim);
+  }
+  #hero h1{
+    font-size:clamp(3.4rem, 7.2vw, 6.4rem);
+    line-height:.94;
+    text-shadow:0 4px 30px rgba(0,0,0,.4);
+  }
+  #hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--rope-bright);
+  }
+  .hero-role{
+    font-size:1.02rem;
+    margin-top:1.3rem;
+    max-width:620px;
+    opacity:.92;
+    line-height:1.65;
+  }
+  .hero-role .co{color:var(--rope);font-weight:600;}
+  .scroll-cue{
+    position:absolute;
+    bottom:2.6rem;
+    right:8vw;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.7rem;
+    font-size:.66rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    opacity:.85;
+    animation:bob 2.6s ease-in-out infinite;
+  }
+  .scroll-cue .line{
+    width:1px;
+    height:40px;
+    background:linear-gradient(to bottom, var(--rope), transparent);
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(8px);}
+  }
+
+  /* ============ i. THE APPROACH ============ */
+  #approach{
+    background:linear-gradient(180deg, var(--valley-dark), #22301f 55%, var(--rock-warm) 100%);
+  }
+  #approach .bg-layer{
+    left:auto;
+    right:0;
+    width:48%;
+  }
+  #approach .bg-layer img{
+    filter:blur(1.2px) saturate(.85) contrast(1.02) brightness(.88);
+    transform:scale(1.03);
+  }
+  #approach .scrim{
+    background:linear-gradient(90deg, var(--valley-dark) 0%, rgba(16,22,18,.98) 38%, rgba(16,22,18,.55) 60%, rgba(16,22,18,.15) 82%, transparent 100%);
+  }
+  #approach .float-photo{
+    width:min(26vw, 400px);
+  }
+  #approach .float-photo figure{
+    border:8px solid #ece5d6;
+    box-shadow:0 34px 70px -18px rgba(0,0,0,.7);
+  }
+  .photo-cap{
+    position:absolute;
+    bottom:0;left:0;right:0;
+    padding:.9rem 1.1rem;
+    background:linear-gradient(0deg, rgba(8,8,8,.85), transparent);
+    font-size:.64rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    z-index:2;
+  }
+  #approach h2{
+    font-size:3.4rem;
+    line-height:1.02;
+    margin-bottom:1.6rem;
+  }
+  #approach p{
+    max-width:520px;
+    font-size:1rem;
+    line-height:1.85;
+    opacity:.9;
+  }
+  #approach p + p{margin-top:1.1rem;}
+  .tag-row{
+    display:flex;
+    gap:.6rem;
+    flex-wrap:wrap;
+    margin-top:1.8rem;
+    max-width:520px;
+  }
+  .tag-row span{
+    font-size:.66rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border:1px solid rgba(241,236,225,.3);
+    padding:.4rem .8rem;
+    border-radius:20px;
+    opacity:.85;
+  }
+
+  /* ============ ii. EXPERIENCE ============ */
+  #experience{
+    flex-direction:column;
+    align-items:stretch;
+    padding-top:7rem;
+    padding-bottom:5rem;
+    padding-right:0;
+    padding-left:0;
+    background:linear-gradient(180deg, var(--rock-warm) 0%, #64381f 30%, var(--sandstone-deep) 62%, var(--sandstone) 100%);
+  }
+  #experience .bg-layer{
+    opacity:.42;
+    mix-blend-mode:soft-light;
+    -webkit-mask-image:linear-gradient(180deg, #000 82%, transparent 100%);
+    mask-image:linear-gradient(180deg, #000 82%, transparent 100%);
+  }
+  #experience .bg-layer img{object-position:center top;filter:contrast(1.2) saturate(1.35);}
+  .exp-head{
+    padding:0 8vw 0 calc(var(--rail-w) + 28px);
+    margin-bottom:4.2rem;
+    position:relative;
+    z-index:2;
+  }
+  .exp-head h2{font-size:3.4rem;}
+  .exp-head .sub{
+    margin-top:.8rem;
+    font-size:.92rem;
+    opacity:.85;
+    max-width:560px;
+    line-height:1.7;
+  }
+  .job{
+    position:relative;
+    z-index:2;
+    padding:2.5rem 8vw 2.5rem calc(var(--rail-w) + 28px);
+    border-top:1px solid rgba(241,236,225,.18);
+    display:grid;
+    grid-template-columns:110px 1fr 200px;
+    gap:2.5rem;
+    align-items:start;
+  }
+  .job:last-of-type{border-bottom:1px solid rgba(241,236,225,.18);}
+  .job .years{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-style:italic;
+    font-size:1.7rem;
+    color:var(--rope);
+    line-height:1.1;
+    padding-top:.2rem;
+  }
+  .job .years small{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-style:normal;
+    font-weight:400;
+    font-size:.6rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--paper);
+    opacity:.6;
+    margin-top:.35rem;
+  }
+  .job .co{
+    font-size:.78rem;
+    letter-spacing:.06em;
+    color:var(--rope-bright);
+    margin-bottom:.4rem;
+    text-transform:uppercase;
+  }
+  .job h3{font-size:1.6rem;margin-bottom:.8rem;}
+  .job p{
+    font-size:.9rem;
+    line-height:1.75;
+    opacity:.92;
+    max-width:640px;
+  }
+  .job .stack{
+    font-size:.66rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.7;
+    border-left:2px solid var(--rope-dim);
+    padding-left:1rem;
+    line-height:1.9;
+    justify-self:end;
+  }
+
+  /* ============ FLOATING PRINTS ============ */
+  .float-photo{
+    position:absolute;
+    z-index:3;
+    width:230px;
+    will-change:transform;
+  }
+  .float-photo figure{
+    position:relative;
+    aspect-ratio:var(--ar, 4/3);
+    overflow:hidden;
+    border:1px solid rgba(241,236,225,.35);
+    box-shadow:0 22px 44px -14px rgba(0,0,0,.55);
+    transform:rotate(var(--tilt, -2deg));
+    background:var(--ink);
+  }
+  .float-photo .photo-cap{
+    font-size:.56rem;
+    padding:.6rem .7rem;
+  }
+
+  /* ============ iii. PROJECTS ============ */
+  #projects{
+    flex-direction:column;
+    align-items:stretch;
+    padding:0 0 6.5rem 0;
+    background:linear-gradient(180deg, var(--sandstone) 0%, #c9ab8a 26%, #a8937a 55%, #89775f 100%);
+  }
+  .proj-banner{
+    position:relative;
+    min-height:46vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:7rem 8vw 2.8rem calc(var(--rail-w) + 28px);
+  }
+  .proj-banner .banner-img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:155%;
+    object-fit:cover;
+    object-position:center top;
+    filter:blur(.7px) saturate(.92) brightness(.94);
+    -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 17%, #000 52%, transparent 94%);
+    mask-image:linear-gradient(180deg, transparent 0%, #000 17%, #000 52%, transparent 94%);
+  }
+  .proj-banner::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse 720px 340px at 20% 82%, rgba(26,14,9,.58), transparent 72%),
+      linear-gradient(180deg, rgba(26,14,9,.38) 0%, rgba(93,52,63,.14) 55%, rgba(176,154,124,.12) 100%);
+    -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 26%, #000 70%, transparent 100%);
+    mask-image:linear-gradient(180deg, transparent 0%, #000 26%, #000 70%, transparent 100%);
+  }
+  .proj-head{position:relative;z-index:2;}
+  .proj-grid,
+  #projects .proj-grid{
+    position:relative;
+    z-index:2;
+    margin:3rem 8vw 0 calc(var(--rail-w) + 28px);
+  }
+  .proj-head h2{font-size:3.4rem;max-width:700px;text-shadow:0 2px 18px rgba(0,0,0,.35);}
+  .proj-head .sub{
+    margin-top:1rem;
+    font-size:.92rem;
+    max-width:560px;
+    line-height:1.7;
+    opacity:.9;
+  }
+  .proj-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1.8rem;
+  }
+  .proj-card{
+    background:rgba(18,13,20,.3);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter:blur(6px);
+    padding:1.9rem 1.7rem 2rem;
+    display:flex;
+    flex-direction:column;
+    min-height:330px;
+    transition:transform .35s ease, border-color .35s ease, background .35s ease;
+  }
+  .proj-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,255,255,.45);
+    background:rgba(18,13,20,.4);
+  }
+  .proj-card .pnum{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    color:var(--rope-bright);
+    font-size:1.05rem;
+    margin-bottom:1rem;
+  }
+  .proj-card h3{
+    font-size:1.3rem;
+    line-height:1.2;
+    margin-bottom:.9rem;
+  }
+  .proj-card p{
+    font-size:.84rem;
+    line-height:1.7;
+    opacity:.92;
+    flex:1;
+  }
+  .proj-card .stack{
+    margin-top:1.2rem;
+    font-size:.64rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    opacity:.78;
+    border-top:1px solid rgba(255,255,255,.2);
+    padding-top:.9rem;
+  }
+  .proj-card .where{
+    margin-top:.9rem;
+    font-size:.66rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--rope-bright);
+  }
+
+  /* ============ iv. CONTACT (night summit) ============ */
+  #contact{
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:linear-gradient(180deg, #89775f 0%, #6a5d68 18%, #3d3560 42%, var(--summit-indigo) 62%, var(--summit-ink) 100%);
+  }
+  #contact .bg-layer{opacity:.55;}
+  #contact .bg-layer img{object-position:center 30%;}
+  #contact .scrim{
+    background:radial-gradient(ellipse at 50% 28%, rgba(34,31,62,.05), rgba(19,18,38,.88) 78%);
+  }
+  #stars{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+  }
+  .star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff;
+    opacity:0;
+    animation:twinkle var(--tw, 4s) ease-in-out infinite;
+    animation-delay:var(--td, 0s);
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0;}
+    50%{opacity:var(--to, .8);}
+  }
+  #contact .content{max-width:760px;margin:0 auto;}
+  #contact .section-eyebrow{justify-content:center;}
+  #contact h2{
+    font-size:3.8rem;
+    line-height:1.04;
+    margin-bottom:1.3rem;
+  }
+  #contact h2 em{font-style:italic;color:var(--rope-bright);font-weight:500;}
+  #contact .lede{
+    font-size:1rem;
+    line-height:1.8;
+    opacity:.88;
+    max-width:540px;
+    margin:0 auto 2.6rem;
+  }
+  .contact-card{
+    border:1px solid rgba(241,236,225,.3);
+    background:rgba(255,255,255,.04);
+    padding:2.2rem 2.6rem;
+    text-align:left;
+    max-width:540px;
+    margin:0 auto;
+  }
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.85rem 0;
+    border-top:1px dashed rgba(241,236,225,.22);
+    font-size:.9rem;
+  }
+  .contact-row:first-child{border-top:none;}
+  .contact-row .k{opacity:.6;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;}
+  .contact-row a{
+    text-decoration:none;
+    border-bottom:1px solid var(--rope-dim);
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .contact-row a:hover{border-color:var(--rope);color:var(--rope-bright);}
+  .resume-btn{
+    display:inline-block;
+    margin-top:2rem;
+    padding:.9rem 2.2rem;
+    border:1px solid var(--rope);
+    color:var(--rope-bright);
+    text-decoration:none;
+    font-size:.76rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    transition:background .25s ease, color .25s ease;
+  }
+  .resume-btn:hover{background:var(--rope);color:var(--summit-ink);}
+  footer{
+    margin-top:4rem;
+    font-size:.66rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.5;
+  }
+
+  /* ============ QUALITY FLOOR ============ */
+  @media (max-width:1080px){
+    :root{--rail-w:64px;}
+    #rail svg{left:18px;}
+    .anchor{left:40px;}
+    .float-photo{display:none;}
+    .job{grid-template-columns:80px 1fr;}
+    .job .stack{display:none;}
+    .proj-grid,.field-grid{grid-template-columns:1fr;}
+    .field-item:nth-child(2){transform:none;}
+    #approach{flex-direction:column;align-items:flex-start;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    #hero .bg-layer img{animation:none;}
+    .scroll-cue{animation:none;}
+    .star{animation:none;opacity:.5;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .bg-layer{will-change:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header id="topnav">
+  <a class="brand" href="#hero">Erik Earl</a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#approach">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<nav id="rail" aria-label="Page progress">
+  <svg viewBox="0 0 44 1000" preserveAspectRatio="none" aria-hidden="true">
+    <path class="track" d="M22,0 C14,110 30,210 22,320 C15,430 29,540 22,650 C16,760 28,870 22,1000" />
+    <path class="fill" id="route-fill" pathLength="100" d="M22,0 C14,110 30,210 22,320 C15,430 29,540 22,650 C16,760 28,870 22,1000" />
+  </svg>
+  <button class="anchor" data-target="hero" data-label="Top" aria-label="Scroll to top"></button>
+  <button class="anchor" data-target="approach" data-label="About" aria-label="Scroll to About"></button>
+  <button class="anchor" data-target="experience" data-label="Experience" aria-label="Scroll to Experience"></button>
+  <button class="anchor" data-target="projects" data-label="Projects" aria-label="Scroll to Projects"></button>
+  <button class="anchor" data-target="contact" data-label="Contact" aria-label="Scroll to Contact"></button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <div class="bg-layer" data-speed="0.15"><img src="./assets/elcap.jpg" alt="El Capitan rising from the Yosemite valley floor"></div>
+  <div class="scrim"></div>
+  <div class="content">
+    <div class="hero-stamp reveal in">Yosemite Valley · El. 3,966 ft</div>
+    <h1 class="reveal in">Erik Earl<br><em>Software&nbsp;Engineer</em></h1>
+    <p class="hero-role reveal in d1">Currently building at <span class="co">Applied Materials</span>. Platform &amp; DevOps engineer who spends weekdays in Kubernetes clusters and weekends on granite.</p>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============ i. THE APPROACH ============ -->
+<section id="approach">
+  <div class="bg-layer" data-speed="0.07"><img src="./assets/gear.jpg" alt="Climbing helmet and rack on Joshua Tree granite, with a curious ringtail"></div>
+  <div class="scrim"></div>
+  <div class="float-photo" data-speed="-0.035" style="right:10vw; top:50%; margin-top:-215px; --tilt:-2.2deg; --ar:1/1;">
+    <figure>
+      <img src="./assets/erik.jpg" alt="Erik">
+    </figure>
+  </div>
+  <div class="content" style="max-width:600px;">
+    <div class="section-eyebrow reveal">
+      <span class="num">i.</span>
+      <span class="name">The Approach</span>
+    </div>
+    <h2 class="reveal d1">Hi, I'm Erik.</h2>
+    <p class="reveal d2">I'm a Platform &amp; DevOps engineer specializing in Kubernetes — CKAD certified, currently a software engineer at Applied Materials. I hold a B.S. in Computer Science with an AI minor from Case Western Reserve University, graduated Cum Laude in December 2024.</p>
+    <p class="reveal d3">Outside of work I'm a rock climber and hiker, happiest on granite in Yosemite or desert rock in Joshua Tree.</p>
+    <div class="tag-row reveal d4">
+      <span>Kubernetes</span><span>CKAD Certified</span><span>Platform Engineering</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ii. EXPERIENCE ============ -->
+<section id="experience">
+  <div class="bg-layer" data-speed="0.05"><img src="./assets/topo.jpg" alt="Climbing routes drawn over a granite face"></div>
+  <div class="exp-head">
+    <div class="section-eyebrow reveal">
+      <span class="num">ii.</span>
+      <span class="name">Experience</span>
+    </div>
+    <h2 class="reveal d1">Where I've worked.</h2>
+    <p class="sub reveal d2">Four years of building platforms, automating infrastructure, and shipping tools other engineers rely on.</p>
+  </div>
+
+  <div class="job reveal">
+    <div class="years">2026<small>Present</small></div>
+    <div>
+      <div class="co">Applied Materials</div>
+      <h3>Software Engineer</h3>
+      <p>Just getting started — more to come.</p>
+    </div>
+    <div class="stack">New chapter</div>
+  </div>
+
+  <div class="job reveal">
+    <div class="years">2025<small>— 2026</small></div>
+    <div>
+      <div class="co">Qualcomm</div>
+      <h3>Software Engineer, Platform &amp; DevOps</h3>
+      <p>Built a Kubernetes-native Database-as-a-Service platform from the ground up, including a custom Python/Kopf operator managing MySQL, PostgreSQL, and MongoDB CRDs across clusters, with cross-cluster backup and restore via S3. Led the RKE1 → RKE2 migration alongside a Calico → Cilium CNI transition, shipped a custom ExternalDNS webhook provider for BlueCat DNS, and administered the shared Jenkins CI/CD platform.</p>
+    </div>
+    <div class="stack">Kubernetes<br>Python · Kopf<br>Cilium · Jenkins</div>
+  </div>
+
+  <div class="job reveal">
+    <div class="years">2023<small>&amp; 2024</small></div>
+    <div>
+      <div class="co">Qualcomm</div>
+      <h3>Software Engineer Intern</h3>
+      <p>Automated TLS certificate issuance with cert-manager and a custom Python Kubernetes operator. Built Django REST APIs for IP lifecycle management that cut manual approval work by roughly 80%.</p>
+    </div>
+    <div class="stack">Cert-Manager<br>Python · Django</div>
+  </div>
+
+  <div class="job reveal">
+    <div class="years">2022<small>— 2023</small></div>
+    <div>
+      <div class="co">Lubrizol</div>
+      <h3>Software Engineering Co-op</h3>
+      <p>Built internal automation tooling and software solutions in Bash, C++, and JavaScript.</p>
+    </div>
+    <div class="stack">Bash · C++<br>JavaScript</div>
+  </div>
+</section>
+
+<!-- ============ iii. PROJECTS ============ -->
+<section id="projects">
+  <div class="proj-banner">
+    <img class="banner-img" src="./assets/landscape.jpg" alt="Joshua Tree desert panorama at dusk">
+    <div class="proj-head">
+      <div class="section-eyebrow reveal">
+        <span class="num">iii.</span>
+        <span class="name">Projects</span>
+      </div>
+      <h2 class="reveal d1">Selected projects.</h2>
+      <p class="sub reveal d2">Side projects built for the love of the problem — most of them running on a Kubernetes cluster in my home lab.</p>
+    </div>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card reveal d1">
+      <div class="pnum">01</div>
+      <h3>Minecraft Server Deployment Platform</h3>
+      <p>A Kubernetes operator and set of CRDs that provision containerized Minecraft servers on demand, fronted by a Flask control plane exposing REST APIs for spin-up, teardown, and management.</p>
+      <div class="stack">Kubernetes · CRDs · Flask · Python</div>
+      <div class="where">Home lab</div>
+    </div>
+    <div class="proj-card reveal d2">
+      <div class="pnum">02</div>
+      <h3>Climbing Data AI Platform</h3>
+      <p>A TypeScript MCP server exposing AI-queryable APIs over millions of crowd-sourced Mountain Project climbing records, backed by self-hosted Kubernetes data pipelines.</p>
+      <div class="stack">TypeScript · MCP · Kubernetes</div>
+      <div class="where">Home lab</div>
+    </div>
+    <div class="proj-card reveal d3">
+      <div class="pnum">03</div>
+      <h3>Manga Translation Pipeline</h3>
+      <p>A computer vision pipeline covering detection, segmentation, OCR, and translation, built around a PyTorch ResNet34 U-Net for panel and text segmentation.</p>
+      <div class="stack">PyTorch · U-Net · Computer Vision</div>
+      <div class="where">Senior capstone</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ iv. CONTACT ============ -->
+<section id="contact">
+  <div class="bg-layer" data-speed="0.1"><img src="./assets/introck.jpg" alt="Joshua Tree rock formation at dusk with the moon rising"></div>
+  <div class="scrim"></div>
+  <div id="stars" aria-hidden="true"></div>
+  <div class="content">
+    <div class="section-eyebrow reveal">
+      <span class="num">iv.</span>
+      <span class="name">Contact</span>
+    </div>
+    <h2 class="reveal d1">Get in <em>touch.</em></h2>
+    <p class="lede reveal d2">Whether it's about work, climbing, or anything in between — my inbox is open.</p>
+    <div class="contact-card reveal d3">
+      <div class="contact-row"><span class="k">Email</span><a href="mailto:erikjearl@gmail.com">erikjearl@gmail.com</a></div>
+      <div class="contact-row"><span class="k">GitHub</span><a href="https://github.com/erikjearl" target="_blank" rel="noopener">github.com/erikjearl</a></div>
+      <div class="contact-row"><span class="k">LinkedIn</span><a href="https://linkedin.com/in/erikjearl" target="_blank" rel="noopener">linkedin.com/in/erikjearl</a></div>
+    </div>
+    <a class="resume-btn reveal d4" href="/resume">Download Resume</a>
+    <footer>© 2026 Erik Earl</footer>
+  </div>
+  <div class="float-photo" data-speed="-0.03" style="left:8vw; top:7rem; --tilt:-2.6deg; --ar:3/4;">
+    <figure>
+      <img src="./assets/white-rasta.jpg" alt="White Rasta boulder, Joshua Tree">
+      <figcaption class="photo-cap">White Rasta · V2 · Joshua Tree</figcaption>
+    </figure>
+  </div>
+  <div class="float-photo" data-speed="-0.05" style="right:5vw; top:8.5rem; --tilt:2.2deg; width:300px;">
+    <figure>
+      <img src="./assets/the-chief.jpg" alt="The Chief boulder at golden hour, Black Mountain">
+      <figcaption class="photo-cap">The Chief · V4 · Black Mountain</figcaption>
+    </figure>
+  </div>
+  <div class="float-photo" data-speed="-0.045" style="left:9vw; bottom:4rem; --tilt:1.8deg; --ar:3/4;">
+    <figure>
+      <img src="./assets/slippery-souls.jpg" alt="Climbing Slippery Souls beside a waterfall, San Bernardino">
+      <figcaption class="photo-cap">Slippery Souls · 5.10 · San Bernardino</figcaption>
+    </figure>
+  </div>
+  <div class="float-photo" data-speed="-0.035" style="right:6vw; bottom:5rem; --tilt:-1.6deg; --ar:3/4;">
+    <figure>
+      <img src="./assets/whodunnit.jpg" alt="Looking down the slab on Whodunnit, Tahquitz">
+      <figcaption class="photo-cap">Whodunnit · 5.9 · Tahquitz</figcaption>
+    </figure>
+  </div>
+</section>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Route line progress ----------
+  var routeFill = document.getElementById('route-fill');
+  var anchors = Array.prototype.slice.call(document.querySelectorAll('.anchor'));
+  var sections = anchors.map(function(a){ return document.getElementById(a.dataset.target); });
+  var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('.bg-layer, .float-photo'));
+
+  // place anchor dots along the rail at each section's scroll position,
+  // clamped away from the viewport edges so the end dots aren't cut off
+  function placeAnchors(){
+    var scrollH = document.documentElement.scrollHeight - window.innerHeight;
+    anchors.forEach(function(a, i){
+      var sec = sections[i];
+      if(!sec) return;
+      var pct = scrollH > 0 ? Math.min(sec.offsetTop / scrollH, 1) * 100 : 0;
+      a.style.top = Math.min(Math.max(pct, 3.5), 96.5) + '%';
+    });
+  }
+
+  // smooth (lerped) progress for the readout + rope
+  var targetPct = 0, shownPct = 0, rafId = null;
+
+  function measure(){
+    var scrollH = document.documentElement.scrollHeight - window.innerHeight;
+    targetPct = scrollH > 0 ? (window.scrollY / scrollH) * 100 : 0;
+
+    // active anchor
+    var mid = window.scrollY + window.innerHeight * 0.4;
+    var activeIdx = 0;
+    sections.forEach(function(sec, i){
+      if(sec && sec.offsetTop <= mid) activeIdx = i;
+    });
+    anchors.forEach(function(a, i){
+      a.classList.toggle('passed', i <= activeIdx);
+      a.classList.toggle('active', i === activeIdx);
+    });
+
+    // parallax
+    if(!reduceMotion){
+      parallaxEls.forEach(function(el){
+        var speed = parseFloat(el.dataset.speed || 0);
+        if(!speed) return;
+        var rect = el.parentElement.getBoundingClientRect();
+        el.style.transform = 'translate3d(0,' + (rect.top * speed).toFixed(1) + 'px,0)';
+      });
+    }
+    if(rafId === null) rafId = requestAnimationFrame(tick);
+  }
+
+  function tick(){
+    shownPct += (targetPct - shownPct) * 0.14;
+    if(Math.abs(targetPct - shownPct) < 0.05) shownPct = targetPct;
+
+    routeFill.style.strokeDasharray = shownPct + ' 100';
+
+    if(shownPct !== targetPct){
+      rafId = requestAnimationFrame(tick);
+    } else {
+      rafId = null;
+    }
+  }
+
+  window.addEventListener('scroll', measure, { passive: true });
+  window.addEventListener('resize', function(){ placeAnchors(); measure(); });
+  placeAnchors();
+  measure();
+
+  anchors.forEach(function(a){
+    a.addEventListener('click', function(){
+      var target = document.getElementById(a.dataset.target);
+      if(target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  // ---------- Starfield at the summit ----------
+  var starBox = document.getElementById('stars');
+  for(var i = 0; i < 130; i++){
+    var s = document.createElement('span');
+    s.className = 'star';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 62).toFixed(2) + '%';
+    var size = Math.random() < 0.2 ? 3 : 2;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.setProperty('--tw', (2.6 + Math.random() * 4).toFixed(2) + 's');
+    s.style.setProperty('--td', (Math.random() * 5).toFixed(2) + 's');
+    s.style.setProperty('--to', (0.3 + Math.random() * 0.6).toFixed(2));
+    starBox.appendChild(s);
+  }
+
+  // ---------- Reveal on scroll ----------
+  var revealEls = document.querySelectorAll('.reveal:not(.in)');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  revealEls.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
