@@ -24,7 +24,7 @@ export function Contact() {
           <div className="contact-row"><span className="k">GitHub</span><a href={site.github} target="_blank" rel="noopener noreferrer">github.com/erikjearl</a></div>
           <div className="contact-row"><span className="k">LinkedIn</span><a href={site.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/erikjearl</a></div>
         </Reveal>
-        <Reveal as="span" delay={4}>
+        <Reveal as="span" delay={4} className="reveal-inline">
           <a className="resume-btn" href={site.resumeHref}>Download Resume</a>
         </Reveal>
         <footer>© 2026 Erik Earl</footer>

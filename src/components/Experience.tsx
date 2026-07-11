@@ -25,7 +25,9 @@ export function Experience() {
             <p>{job.description}</p>
           </div>
           <div className="stack">
-            {job.stack.map((line) => <span key={line}>{line}<br /></span>)}
+            {job.stack.map((line, i) => (
+              <span key={line}>{line}{i < job.stack.length - 1 && <br />}</span>
+            ))}
           </div>
         </Reveal>
       ))}

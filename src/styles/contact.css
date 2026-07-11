@@ -70,6 +70,7 @@
   transition:border-color .2s ease, color .2s ease;
 }
 .contact-row a:hover{border-color:var(--rope);color:var(--rope-bright);}
+.reveal-inline { display: inline-block; }
 .resume-btn{
   display:inline-block;
   margin-top:2rem;
