@@ -1,0 +1,18 @@
+:root {
+  --valley-dark: #101612;
+  --valley-green: #2c4632;
+  --rock-warm: #54402f;
+  --sandstone: #c46a34;
+  --sandstone-deep: #71351b;
+  --dusk-pink: #d98a83;
+  --dusk-lav: #75648c;
+  --summit-indigo: #221f3e;
+  --summit-ink: #131226;
+  --paper: #f1ece1;
+  --ink: #1c1912;
+  --rope: #e8c15a;
+  --rope-bright: #f4d98a;
+  --rope-dim: rgba(232, 193, 90, .3);
+  --sand-fade: #89775f; /* sampled from landscape.jpg bottom */
+  --rail-w: 112px;
+}
