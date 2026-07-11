@@ -1,6 +1,7 @@
 import { TopNav } from './components/TopNav';
 import { RouteRail } from './components/RouteRail';
 import { Hero } from './components/Hero';
+import { About } from './components/About';
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <TopNav />
       <RouteRail />
       <Hero />
+      <About />
     </main>
   );
 }

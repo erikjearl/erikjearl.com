@@ -1,0 +1,39 @@
+/* ============ i. THE APPROACH ============ */
+#approach{
+  background:linear-gradient(180deg, var(--valley-dark), #22301f 55%, var(--rock-warm) 100%);
+}
+#approach .bg-layer{
+  left:auto;
+  right:0;
+  width:48%;
+}
+#approach .bg-layer img{
+  filter:blur(1.2px) saturate(.85) contrast(1.02) brightness(.88);
+  transform:scale(1.03);
+}
+#approach .scrim{
+  background:linear-gradient(90deg, var(--valley-dark) 0%, rgba(16,22,18,.98) 38%, rgba(16,22,18,.55) 60%, rgba(16,22,18,.15) 82%, transparent 100%);
+}
+#approach .float-photo{
+  width:min(26vw, 400px);
+}
+#approach .float-photo figure{
+  border:8px solid #ece5d6;
+  box-shadow:0 34px 70px -18px rgba(0,0,0,.7);
+}
+#approach h2{
+  font-size:3.4rem;
+  line-height:1.02;
+  margin-bottom:1.6rem;
+}
+#approach p{
+  max-width:520px;
+  font-size:1rem;
+  line-height:1.85;
+  opacity:.9;
+}
+#approach p + p{margin-top:1.1rem;}
+
+@media (max-width:1080px){
+  #approach{flex-direction:column;align-items:flex-start;}
+}
