@@ -1,0 +1,76 @@
+/* ============ ALTIMETER RAIL ============ */
+#rail{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:var(--rail-w);
+  z-index:500;
+}
+#rail svg{
+  position:absolute;
+  left:34px;
+  top:0;
+  width:44px;
+  height:100%;
+}
+#rail .track{
+  fill:none;
+  stroke:rgba(241,236,225,.16);
+  stroke-width:1.5;
+}
+#rail .fill{
+  fill:none;
+  stroke:var(--rope);
+  stroke-width:2.5;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 5px var(--rope-dim));
+}
+.anchor{
+  position:absolute;
+  left:56px;
+  transform:translate(-50%,-50%);
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:var(--valley-dark);
+  border:2px solid rgba(241,236,225,.5);
+  cursor:pointer;
+  padding:0;
+  transition:background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.anchor::after{
+  content:attr(data-label);
+  position:absolute;
+  left:24px;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.62rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--paper);
+  white-space:nowrap;
+  opacity:0;
+  transition:opacity .2s ease;
+  background:rgba(16,22,18,.88);
+  padding:4px 9px;
+  border:1px solid rgba(241,236,225,.22);
+}
+.anchor:hover::after,.anchor:focus-visible::after{opacity:1;}
+.anchor.passed{
+  background:var(--rope);
+  border-color:var(--rope);
+  box-shadow:0 0 10px 2px var(--rope-dim);
+}
+.anchor.active{
+  background:var(--rope-bright);
+  border-color:#fff;
+  box-shadow:0 0 14px 3px var(--rope-dim);
+}
+
+/* ============ QUALITY FLOOR ============ */
+@media (max-width:1080px){
+  #rail svg{left:18px;}
+  .anchor{left:40px;}
+}
