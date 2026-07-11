@@ -3,6 +3,7 @@ import { RouteRail } from './components/RouteRail';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { Experience } from './components/Experience';
+import { Projects } from './components/Projects';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Hero />
       <About />
       <Experience />
+      <Projects />
     </main>
   );
 }
