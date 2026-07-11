@@ -1,0 +1,92 @@
+/* ============ ii. EXPERIENCE ============ */
+#experience{
+  flex-direction:column;
+  align-items:stretch;
+  padding-top:7rem;
+  padding-bottom:5rem;
+  padding-right:0;
+  padding-left:0;
+  background:linear-gradient(180deg, var(--rock-warm) 0%, #64381f 30%, var(--sandstone-deep) 62%, var(--sandstone) 100%);
+}
+#experience .bg-layer{
+  opacity:.42;
+  mix-blend-mode:soft-light;
+  -webkit-mask-image:linear-gradient(180deg, #000 82%, transparent 100%);
+  mask-image:linear-gradient(180deg, #000 82%, transparent 100%);
+}
+#experience .bg-layer img{object-position:center top;filter:contrast(1.2) saturate(1.35);}
+.exp-head{
+  padding:0 8vw 0 calc(var(--rail-w) + 28px);
+  margin-bottom:4.2rem;
+  position:relative;
+  z-index:2;
+}
+.exp-head h2{font-size:3.4rem;}
+.exp-head .sub{
+  margin-top:.8rem;
+  font-size:.92rem;
+  opacity:.85;
+  max-width:560px;
+  line-height:1.7;
+}
+.job{
+  position:relative;
+  z-index:2;
+  padding:2.5rem 8vw 2.5rem calc(var(--rail-w) + 28px);
+  border-top:1px solid rgba(241,236,225,.18);
+  display:grid;
+  grid-template-columns:110px 1fr 200px;
+  gap:2.5rem;
+  align-items:start;
+}
+.job:last-of-type{border-bottom:1px solid rgba(241,236,225,.18);}
+.job .years{
+  font-family:'Fraunces',serif;
+  font-weight:700;
+  font-style:italic;
+  font-size:1.7rem;
+  color:var(--rope);
+  line-height:1.1;
+  padding-top:.2rem;
+}
+.job .years small{
+  display:block;
+  font-family:'IBM Plex Mono',monospace;
+  font-style:normal;
+  font-weight:400;
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--paper);
+  opacity:.6;
+  margin-top:.35rem;
+}
+.job .co{
+  font-size:.78rem;
+  letter-spacing:.06em;
+  color:var(--rope-bright);
+  margin-bottom:.4rem;
+  text-transform:uppercase;
+}
+.job h3{font-size:1.6rem;margin-bottom:.8rem;}
+.job p{
+  font-size:.9rem;
+  line-height:1.75;
+  opacity:.92;
+  max-width:640px;
+}
+.job .stack{
+  font-size:.66rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  opacity:.7;
+  border-left:2px solid var(--rope-dim);
+  padding-left:1rem;
+  line-height:1.9;
+  justify-self:end;
+}
+
+@media (max-width:1080px){
+  .job{grid-template-columns:80px 1fr;}
+  .job .stack{display:none;}
+}
