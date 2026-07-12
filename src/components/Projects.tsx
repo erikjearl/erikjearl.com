@@ -14,7 +14,7 @@ export function Projects() {
           </Reveal>
           <Reveal as="h2" delay={1}>Selected projects.</Reveal>
           <Reveal as="p" delay={2} className="sub">
-            Side projects built for the love of the problem — most of them running on a Kubernetes cluster in my home lab.
+            Side projects built to solve problems I'm curious about — most of them running on a Kubernetes cluster in my home lab.
           </Reveal>
         </div>
       </div>

@@ -12,7 +12,7 @@ export function About() {
       <div className="content" style={{ maxWidth: 600 }}>
         <Reveal className="section-eyebrow">
           <span className="num">i.</span>
-          <span className="name">The Approach</span>
+          <span className="name">About Me</span>
         </Reveal>
         <Reveal as="h2" delay={1}>{site.aboutHeading}</Reveal>
         {site.aboutParas.map((p, i) => (
