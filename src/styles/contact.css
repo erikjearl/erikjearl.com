@@ -101,9 +101,8 @@ footer{
   .contact-card { padding: 1.6rem 1.4rem; }
 }
 
-/* The two prints only fit side-by-side on wide screens; below 1560px the
-   back print steps out and the front print slims down to clear the card. */
+/* Diagonal corner prints clear the contact card at all widths once they
+   slim down a little on mid-size screens. */
 @media (max-width: 1560px) {
-  #contact .float-photo:nth-last-of-type(2) { display: none; }
   #contact .float-photo { width: 200px !important; }
 }

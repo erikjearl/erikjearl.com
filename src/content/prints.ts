@@ -1,18 +1,67 @@
 import type { CSSProperties } from 'react';
 
 export interface Print {
-  src: string; alt: string; caption: string;
-  pos: CSSProperties; tilt: string; speed: number; ar: string; width?: string;
+  src: string;
+  alt: string;
+  caption: string;
+  pos: CSSProperties;
+  tilt: string;
+  speed: number;
+  ar: string;
+  width?: string;
+  /** Magnify the photo inside its frame (1 = no zoom, 1.3 = 30% closer). */
+  zoom?: number;
+  /** Which part of the photo stays in frame — CSS object-position,
+   *  e.g. 'center 30%' (favor the top) or '70% 50%' (favor the right). */
+  focus?: string;
 }
 
-// The two prints overlap into a single "pile" anchored bottom-right;
-// DOM order controls stacking (second print sits on top).
+/* ── Contact-section prints ─────────────────────────────────────────────
+ * One entry per pinned photo. The knobs:
+ *   pos    where it sits: any of { top, bottom, left, right } with CSS
+ *          units ('7rem', '6vw', '12%'...). Add zIndex here if they overlap.
+ *   width  print width; height follows the aspect ratio `ar`.
+ *   tilt   rotation ('2deg' leans right, '-2deg' leans left).
+ *   speed  parallax drift while scrolling; keep around -0.03 .. -0.05.
+ *   zoom   optional close-up of the photo inside the frame (try 1.2-1.6).
+ *   focus  optional object-position to pick WHAT the zoom centers on.
+ * Notes:
+ *   - below 1560px wide, prints slim to 200px (see contact.css);
+ *     below 1080px they hide entirely.
+ *   - the contact card spans roughly the middle 540px of the section, from
+ *     ~45% down to ~90% of its height — keep bottom prints out of that band.
+ * ──────────────────────────────────────────────────────────────────── */
 export const contactPrints: Print[] = [
-  { src: '/assets/slippery-souls.jpg', alt: 'Climbing Slippery Souls beside a waterfall, San Bernardino Mountains', caption: 'Slippery Souls · 5.10 · San Bernardino Mountains', pos: { right: '15vw', bottom: '11rem' }, tilt: '-3.2deg', speed: -0.03, ar: '3/4', width: '210px' },
-  { src: '/assets/whodunnit.jpg', alt: 'Looking down the slab on Whodunnit, Tahquitz', caption: 'Whodunnit · 5.9 · Tahquitz', pos: { right: '4vw', bottom: '4.5rem', zIndex: 4 }, tilt: '2.4deg', speed: -0.045, ar: '3/4', width: '250px' },
+  {
+    src: '/assets/slippery-souls.jpg',
+    alt: 'Climbing Slippery Souls beside a waterfall, San Bernardino Mountains',
+    caption: 'Slippery Souls · 5.10 · San Bernardino Mountains',
+    pos: { left: '6vw', top: '7rem' },
+    width: '210px',
+    tilt: '-2.4deg',
+    speed: -0.03,
+    ar: '3/4',
+  },
+  {
+    src: '/assets/whodunnit.jpg',
+    alt: 'Looking down the slab on Whodunnit, Tahquitz',
+    caption: 'Whodunnit · 5.9 · Tahquitz',
+    pos: { left: '7vw', bottom: '5rem' },
+    width: '250px',
+    tilt: '2deg',
+    speed: -0.045,
+    ar: '3/4',
+  },
 ];
 
+/* The framed portrait on the About panel — same knobs. */
 export const aboutPrint: Print = {
-  src: '/assets/erik.jpg', alt: 'Erik', caption: '',
-  pos: { right: '10vw', top: '50%', marginTop: '-215px' }, tilt: '-2.2deg', speed: -0.035, ar: '1/1',
+  src: '/assets/erik.jpg',
+  alt: 'Erik',
+  caption: '',
+  pos: { right: '10vw', top: '50%', marginTop: '-215px' },
+  width: undefined,
+  tilt: '-2.2deg',
+  speed: -0.035,
+  ar: '1/1',
 };

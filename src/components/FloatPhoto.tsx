@@ -14,10 +14,17 @@ export function FloatPhoto({ print }: { print: Print }) {
     ['--ar' as string]: print.ar,
   };
 
+  const imgStyle: CSSProperties = {
+    ...(print.focus ? { objectPosition: print.focus } : {}),
+    ...(print.zoom && print.zoom !== 1
+      ? { transform: `scale(${print.zoom})`, transformOrigin: print.focus ?? 'center' }
+      : {}),
+  };
+
   return (
     <div className="float-photo" ref={ref} style={style}>
       <figure>
-        <img src={print.src} alt={print.alt} loading="lazy" />
+        <img src={print.src} alt={print.alt} loading="lazy" style={imgStyle} />
         {print.caption && <figcaption className="photo-cap">{print.caption}</figcaption>}
       </figure>
     </div>
