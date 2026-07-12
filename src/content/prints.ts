@@ -5,9 +5,11 @@ export interface Print {
   pos: CSSProperties; tilt: string; speed: number; ar: string; width?: string;
 }
 
+// The two prints overlap into a single "pile" anchored bottom-right;
+// DOM order controls stacking (second print sits on top).
 export const contactPrints: Print[] = [
-  { src: '/assets/slippery-souls.jpg', alt: 'Climbing Slippery Souls beside a waterfall, San Bernardino Mountains', caption: 'Slippery Souls · 5.10 · San Bernardino Mountains', pos: { left: '7vw', bottom: '11rem' }, tilt: '1.8deg', speed: -0.045, ar: '3/4', width: '260px' },
-  { src: '/assets/whodunnit.jpg', alt: 'Looking down the slab on Whodunnit, Tahquitz', caption: 'Whodunnit · 5.9 · Tahquitz', pos: { right: '7vw', bottom: '6rem' }, tilt: '-1.6deg', speed: -0.035, ar: '3/4', width: '250px' },
+  { src: '/assets/slippery-souls.jpg', alt: 'Climbing Slippery Souls beside a waterfall, San Bernardino Mountains', caption: 'Slippery Souls · 5.10 · San Bernardino Mountains', pos: { right: '15vw', bottom: '11rem' }, tilt: '-3.2deg', speed: -0.03, ar: '3/4', width: '210px' },
+  { src: '/assets/whodunnit.jpg', alt: 'Looking down the slab on Whodunnit, Tahquitz', caption: 'Whodunnit · 5.9 · Tahquitz', pos: { right: '4vw', bottom: '4.5rem', zIndex: 4 }, tilt: '2.4deg', speed: -0.045, ar: '3/4', width: '250px' },
 ];
 
 export const aboutPrint: Print = {

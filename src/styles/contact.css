@@ -100,3 +100,10 @@ footer{
   #contact h2 { font-size: 2.4rem; }
   .contact-card { padding: 1.6rem 1.4rem; }
 }
+
+/* The two prints only fit side-by-side on wide screens; below 1560px the
+   back print steps out and the front print slims down to clear the card. */
+@media (max-width: 1560px) {
+  #contact .float-photo:nth-last-of-type(2) { display: none; }
+  #contact .float-photo { width: 200px !important; }
+}
