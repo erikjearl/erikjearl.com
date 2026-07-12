@@ -12,7 +12,7 @@ export function Hero() {
           {site.name}<br /><em>{site.role.replace(' ', ' ')}</em>
         </Reveal>
         <Reveal as="p" immediate delay={1} className="hero-role">
-          Currently building at <span className="co">{site.company}</span>. {site.heroLede}
+          {site.heroLede} <span className="co">{site.company}</span>.
         </Reveal>
       </div>
       <div className="scroll-cue" aria-hidden="true">
