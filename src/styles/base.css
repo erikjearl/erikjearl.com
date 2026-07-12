@@ -111,7 +111,7 @@ section{
 .float-photo{
   position:absolute;
   z-index:3;
-  width:230px;
+  width:var(--w, 230px);
   will-change:transform;
 }
 .float-photo figure{

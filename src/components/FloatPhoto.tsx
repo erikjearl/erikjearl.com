@@ -9,7 +9,7 @@ export function FloatPhoto({ print }: { print: Print }) {
 
   const style: CSSProperties = {
     ...print.pos,
-    ...(print.width ? { width: print.width } : {}),
+    ...(print.width ? { ['--w' as string]: print.width } : {}),
     ['--tilt' as string]: print.tilt,
     ['--ar' as string]: print.ar,
   };

@@ -104,5 +104,5 @@ footer{
 /* Diagonal corner prints clear the contact card at all widths once they
    slim down a little on mid-size screens. */
 @media (max-width: 1560px) {
-  #contact .float-photo { width: 200px !important; }
+  #contact .float-photo { width: calc(var(--w, 230px) * 0.8); }
 }
