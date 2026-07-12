@@ -30,7 +30,7 @@ export const jobs: Job[] = [
     company: 'Qualcomm',
     title: 'Software Engineer Intern',
     description: 'Automated TLS certificate issuance with cert-manager and a custom Python Kubernetes operator. Built Django REST APIs for IP lifecycle management that cut manual approval work by roughly 80%.',
-    stack: ['Backend Development', 'Python · Django', 'REST APIs'],
+    stack: ['Backend Development', 'Python · Django', 'REST API'],
   },
   {
     year: '2022',

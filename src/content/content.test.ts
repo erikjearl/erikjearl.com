@@ -25,12 +25,10 @@ test('three projects with context lines', () => {
   expect(projects.map(p => p.context)).toEqual(['Home lab', 'Home lab', 'Senior capstone']);
 });
 
-test('four contact prints = the tick list, with factual captions', () => {
-  expect(contactPrints).toHaveLength(4);
+test('two contact prints = the tick list, with factual captions', () => {
+  expect(contactPrints).toHaveLength(2);
   expect(contactPrints.map(p => p.caption)).toEqual([
-    'White Rasta · V2 · Joshua Tree',
-    'The Chief · V4 · Black Mountain',
-    'Slippery Souls · 5.10 · San Bernardino',
+    'Slippery Souls · 5.10 · San Bernardino Mountains',
     'Whodunnit · 5.9 · Tahquitz',
   ]);
   for (const p of [...contactPrints, aboutPrint]) expect(p.alt.length).toBeGreaterThan(0);
