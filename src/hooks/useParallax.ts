@@ -14,7 +14,20 @@ export function useParallax(ref: RefObject<HTMLElement>, speed: number): void {
 
     const onScroll = () => {
       const top = section.getBoundingClientRect().top;
-      el.style.transform = `translate3d(0, ${(top * speed).toFixed(1)}px, 0)`;
+      let d = top * speed;
+      // Background images overscan their layer (e.g. top:-8%/height:116%).
+      // Clamp the shift to that overhang so image edges never slide into view.
+      if (el.classList.contains('bg-layer')) {
+        const img = el.querySelector('img');
+        if (img) {
+          const overTop = -img.offsetTop;
+          const overBottom = img.offsetTop + img.offsetHeight - section.clientHeight;
+          if (overTop >= 0 && overBottom >= 0) {
+            d = Math.min(Math.max(d, -overBottom), overTop);
+          }
+        }
+      }
+      el.style.transform = `translate3d(0, ${d.toFixed(1)}px, 0)`;
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
