@@ -21,7 +21,7 @@ export const jobs: Job[] = [
     yearNote: '— 2026',
     company: 'Qualcomm',
     title: 'Software Engineer, Platform & DevOps',
-    description: 'Built a Kubernetes-native Database-as-a-Service platform from the ground up, including a custom Python/Kopf operator managing MySQL, PostgreSQL, and MongoDB CRDs across clusters, with cross-cluster backup and restore via S3. Led the RKE1 → RKE2 migration alongside a Calico → Cilium CNI transition, shipped a custom ExternalDNS webhook provider for BlueCat DNS, and administered the shared Jenkins CI/CD platform.',
+    description: 'Built and operated Kubernetes-native platform infrastructure across a multi-cluster environment, including a Database-as-a-Service platform that replaced manual VM provisioning with an API-driven, self-service workflow. Developed production software and automation in Python, Go, and Bash — a custom Python/Kopf operator managing MySQL, PostgreSQL, and MongoDB resources, S3-based cross-cluster backup and restore workflows, backend services, internal APIs, and infrastructure tooling. Supported Kubernetes networking and administered the shared Jenkins CI/CD platform through reusable pipeline tooling and operational support.',
     stack: ['Kubernetes · Python', 'CI/CD · Linux', 'AWS · Networking'],
   },
   {
