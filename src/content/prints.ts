@@ -14,6 +14,8 @@ export interface Print {
   /** Which part of the photo stays in frame — CSS object-position,
    *  e.g. 'center 30%' (favor the top) or '70% 50%' (favor the right). */
   focus?: string;
+  /** Optional sentence shown under the caption in the click-to-view lightbox. */
+  story?: string;
 }
 
 /* ── Contact-section prints ─────────────────────────────────────────────
@@ -41,16 +43,18 @@ export const contactPrints: Print[] = [
     tilt: '-2.4deg',
     speed: -0.03,
     ar: '3/4',
+    story: 'A waterfall pitch in the San Bernardino mountains — the spring runoff keeps the holds honest.',
   },
   {
     src: '/assets/erikjam.jpg',
     alt: 'Erik jamming a crack on Joshua Tree granite',
-    caption: 'Crack climbing · Joshua Tree',
-    pos: { left: '12vw', top: '7rem' },
-    width: '250px',
+    caption: 'Toe Jam · 5.7 · Joshua Tree',
+    pos: { left: '11vw', top: '8rem' },
+    width: '300px',
     tilt: '2deg',
     speed: -0.045,
     ar: '4/5',
+    story: 'Hand jams on Joshua Tree granite, looking back at the belay.',
   },
 ];
 

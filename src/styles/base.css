@@ -145,3 +145,20 @@ section{
   :root { --rail-w: 0px; }
   section { padding-right: 6vw; }
 }
+
+/* Prints invite a click: they "lift" on hover (straighten + grow) and open
+   a lightbox. */
+.float-photo figure {
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.float-photo figure:hover,
+.float-photo figure:focus-visible {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 0 30px 62px -16px rgba(0, 0, 0, 0.72);
+}
+@media (prefers-reduced-motion: reduce) {
+  .float-photo figure {
+    transition: none;
+  }
+}
