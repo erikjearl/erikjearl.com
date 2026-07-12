@@ -13,7 +13,7 @@ export const jobs: Job[] = [
     yearNote: 'Present',
     company: 'Applied Materials',
     title: 'Software Engineer',
-    description: 'Just getting started — more to come.',
+    description: 'Supporting the Kubernetes platform powering engineering and collaboration at the EPIC Center.',
     stack: ['New chapter'],
   },
   {
