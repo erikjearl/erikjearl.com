@@ -37,7 +37,7 @@ export const jobs: Job[] = [
     yearNote: '— 2023',
     company: 'Lubrizol',
     title: 'Software Engineering Co-op',
-    description: 'Built internal automation tooling and software solutions in Bash, C++, and JavaScript.',
-    stack: ['Bash · C++', 'JavaScript'],
+    description: 'Built internal automation tooling and software solutions in Bash, Python, C++, and JavaScript.',
+    stack: ['Bash · C++', 'JavaScript', 'HTML · CSS'],
   },
 ];
