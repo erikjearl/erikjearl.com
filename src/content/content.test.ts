@@ -29,7 +29,7 @@ test('two contact prints = the tick list, with factual captions', () => {
   expect(contactPrints).toHaveLength(2);
   expect(contactPrints.map(p => p.caption)).toEqual([
     'Slippery Souls · 5.10 · San Bernardino Mountains',
-    'Whodunnit · 5.9 · Tahquitz',
+    'Crack climbing · Joshua Tree',
   ]);
   for (const p of [...contactPrints, aboutPrint]) expect(p.alt.length).toBeGreaterThan(0);
 });
