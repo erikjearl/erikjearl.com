@@ -5,9 +5,7 @@
 }
 #hero .bg-layer img{
   top:-4%;
-  /* hero only ever shifts upward; deep bottom overscan absorbs the 0.15
-     speed plus scroll-lag frames */
-  height:124%;
+  height:112%;
   transform-origin:50% 35%;
   animation:kenburns 7s cubic-bezier(.2,.6,.3,1) both;
 }
