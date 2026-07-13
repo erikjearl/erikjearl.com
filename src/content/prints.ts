@@ -43,7 +43,7 @@ export const contactPrints: Print[] = [
     tilt: '-2.4deg',
     speed: -0.03,
     ar: '3/4',
-    story: 'A slippery pitch of slab hidden in a slot canyon nestled in the San Bernardino mountains ',
+    story: 'A slippery pitch of slab, tucked into a narrow slot canyon in the San Bernardino Mountains.',
   },
   {
     src: '/assets/erikjam.jpg',

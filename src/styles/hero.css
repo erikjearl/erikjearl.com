@@ -6,7 +6,11 @@
 #hero .bg-layer img{
   top:-4%;
   height:112%;
-  transform-origin:50% 35%;
+  /* crop anchors LEFT (narrow windows lose the right side, never El Cap's
+     face) and favors the lower frame so the climber at bottom-left stays
+     visible; first value = horizontal anchor, second: higher = more meadow */
+  object-position:left 72%;
+  transform-origin:40% 70%;
   animation:kenburns 7s cubic-bezier(.2,.6,.3,1) both;
 }
 @keyframes kenburns{
