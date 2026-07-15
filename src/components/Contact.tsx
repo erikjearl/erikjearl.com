@@ -25,7 +25,7 @@ export function Contact() {
           <div className="contact-row"><span className="k">LinkedIn</span><a href={site.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/erikjearl</a></div>
         </Reveal>
         <Reveal as="span" delay={4} className="reveal-inline">
-          <a className="resume-btn" href={site.resumeHref} target="_blank" rel="noopener noreferrer">Download Resume</a>
+          <a className="resume-btn" href={site.resumeHref} target="_blank" rel="noopener noreferrer" data-goatcounter-click="resume-download">Download Resume</a>
         </Reveal>
         <footer>© 2026 Erik Earl</footer>
       </div>
