@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Section } from './Section';
 import { Reveal } from './Reveal';
 import { FloatPhoto } from './FloatPhoto';
@@ -7,6 +8,13 @@ import { contactPrints } from '../content/prints';
 import '../styles/contact.css';
 
 export function Contact() {
+  // count.js (async) can execute before React renders this button, in which
+  // case its automatic event binding finds nothing; rebind after mount.
+  useEffect(() => {
+    (window as unknown as { goatcounter?: { bind_events?: () => void } })
+      .goatcounter?.bind_events?.();
+  }, []);
+
   return (
     <Section id="contact" bg={{ src: '/assets/introck.jpg', alt: 'Joshua Tree rock formation at dusk with the moon rising', speed: 0.1 }} scrim>
       <Starfield />
