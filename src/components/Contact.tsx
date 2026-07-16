@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Section } from './Section';
 import { Reveal } from './Reveal';
 import { FloatPhoto } from './FloatPhoto';
@@ -7,6 +8,13 @@ import { contactPrints } from '../content/prints';
 import '../styles/contact.css';
 
 export function Contact() {
+  // count.js (async) can execute before React renders this button, in which
+  // case its automatic event binding finds nothing; rebind after mount.
+  useEffect(() => {
+    (window as unknown as { goatcounter?: { bind_events?: () => void } })
+      .goatcounter?.bind_events?.();
+  }, []);
+
   return (
     <Section id="contact" bg={{ src: '/assets/introck.jpg', alt: 'Joshua Tree rock formation at dusk with the moon rising', speed: 0.1 }} scrim>
       <Starfield />
@@ -25,7 +33,7 @@ export function Contact() {
           <div className="contact-row"><span className="k">LinkedIn</span><a href={site.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/erikjearl</a></div>
         </Reveal>
         <Reveal as="span" delay={4} className="reveal-inline">
-          <a className="resume-btn" href={site.resumeHref} target="_blank" rel="noopener noreferrer">Download Resume</a>
+          <a className="resume-btn" href={site.resumeHref} target="_blank" rel="noopener noreferrer" data-goatcounter-click="resume-download">Download Resume</a>
         </Reveal>
         <footer>© 2026 Erik Earl</footer>
       </div>

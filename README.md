@@ -17,6 +17,7 @@ npm run preview    # serve dist/ at http://localhost:4173
 - Site copy and data (jobs, projects, photo prints, links) live in `src/content/` — edit there, never in components.
 - Photos: originals in `media/` (untracked); run `./scripts/convert-images.sh` to regenerate web assets in `public/assets/`.
 - Deploys automatically via GitHub Actions on push to `main` (`.github/workflows/deploy.yml`).
+- Analytics: [GoatCounter](https://www.goatcounter.com) (cookie-less, aggregate-only) — see `docs/superpowers/specs/2026-07-12-analytics-design.md`.
 
 ## Design lineage
 
